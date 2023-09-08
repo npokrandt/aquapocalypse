@@ -19,6 +19,10 @@ Player.init(
             type: DataTypes.INTEGER,
             allowNull: false,
         },
+        speed: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
         time_alive: {
             type: DataTypes.INTEGER,
             allowNull: false,
