@@ -22,6 +22,13 @@ Player.init(
         time_alive: {
             type: DataTypes.INTEGER,
             allowNull: false,
+        },
+        user_id: {
+            type: DataTypes.INTEGER,
+            references: {
+                model: 'User',
+                key: 'id'
+            }
         }
     },
     {
