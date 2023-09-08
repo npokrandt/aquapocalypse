@@ -23,5 +23,20 @@
     "name": "Blake",
     "email": "the_blake@yahoo.com",
     "password": "password12345"
+  },
+  {
+    "name": "Annika",
+    "email": "annika.crossley@gmail.com",
+    "password": "password12345"
+  },
+  {
+    "name": "Paul",
+    "email": "pchucklambs@gmail.com",
+    "password": "password12345"
+  },
+  {
+    "name": "Nathan",
+    "email": "npokrandt919@gmail.com",
+    "password": "password12345"
   }
 ]
