@@ -1,2 +1,2 @@
-DROP DATABASE IF EXISTS user_db;
-CREATE DATABASE user_db;
+DROP DATABASE IF EXISTS aquapocalypse_db;
+CREATE DATABASE aquapocalypse_db;
