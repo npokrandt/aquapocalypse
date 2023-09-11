@@ -20,6 +20,10 @@ router.get('/', withAuth, async (req, res) => {
   }
 });
 
+router.get('/game', (req, res) => {
+  res.render('game')
+})
+
 router.get('/login', (req, res) => {
   if (req.session.logged_in) {
     res.redirect('/');
