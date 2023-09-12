@@ -22,7 +22,8 @@ export default class Game extends Phaser.Scene {
         //can't leave world, stays 
         this.ball.body.setCollideWorldBounds(true, 1, 1)
 
-        const scoreLabel = this.add.text(400, 50, 'Score: 3', {
+        let score = 0;
+        const scoreLabel = this.add.text(400, 50, 'Score: 0', {
             fontSize: 48,
             color: 'white'
         })
@@ -39,6 +40,7 @@ export default class Game extends Phaser.Scene {
             var y = Phaser.Math.RND.between(0, 600);
            
             var newFishFood = this.fishFood.create(x, y, 'ball');
+            //where is newFishFood supposed to be used? still gray
         }
 
         this.physics.add.collider(this.fishFood);
@@ -46,6 +48,10 @@ export default class Game extends Phaser.Scene {
 
         function collectFood (ball, fishFood) {
             fishFood.disableBody(true, true);
+
+            score += 10;
+            scoreLabel.setText('Score: ' + score);
+            //points increase by x amount when collected 
         }
     }
 
