@@ -1,20 +1,33 @@
+const { Wrap } = Phaser.Math
+//const { black, white } = colors.hexColors;
+
+const cellW = 100
+const cellH = 100
+
 export default class Game extends Phaser.Scene {
-    
 
     //not sure what this does, but seems good to have
     preload()
     {
-
+        //this.load.image('bg', 'assets/pics/the-end-by-iloe-and-made.jpg')
+        //this.load.image('block', 'assets/sprites/block.png')
     }
 
     //create the game
     create() { 
        // this.physics.world.setBounds(0, 0, 10000, 10000)
 
-        //const camera = this.cameras.main
-        this.add.image(0, 0, 'bg')
+        const camera = this.cameras.main
+        //this.add.image(0, 0, 'bg')
 
-        //this.physics.add.group()
+        const {width, height} = camera
+
+        const grid = this.add
+        .grid(0, 0, width + cellW, height + cellH, cellW, cellH)
+        .setAlpha(0.2)
+        .setOrigin(0, 0)
+        .setScrollFactor(0, 0)
+
         //will be a fish soon
         this.ball = this.add.circle(400, 250, 30, 0x0f4d12, 1)
         this.physics.add.existing(this.ball)
