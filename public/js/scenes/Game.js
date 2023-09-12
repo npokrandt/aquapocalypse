@@ -40,7 +40,7 @@ export default class Game extends Phaser.Scene {
             var y = Phaser.Math.RND.between(0, 600);
            
             var newFishFood = this.fishFood.create(x, y, 'ball');
-            //where is newFishFood supposed to be used? still gray
+            //where is newFishFood supposed to be used? it's still gray
         }
 
         this.physics.add.collider(this.fishFood);
@@ -48,10 +48,8 @@ export default class Game extends Phaser.Scene {
 
         function collectFood (ball, fishFood) {
             fishFood.disableBody(true, true);
-
             score += 10;
             scoreLabel.setText('Score: ' + score);
-            //points increase by x amount when collected 
         }
     }
 
