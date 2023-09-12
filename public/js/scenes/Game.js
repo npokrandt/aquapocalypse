@@ -32,15 +32,14 @@ export default class Game extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys()
 
         //fishFood starts here
-        this.fishFood = this.physics.add.group({
-            key: 'fishFood',
-            repeat: 10,
-            setXY: { x: 50, y: 100, stepX: 60 }
-        });
-
-        this.fishFood.children.iterate(function(child) {
-            child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-        })
+        this.fishFood = this.physics.add.group();
+       
+        for (var i = 0; i < 20; i++) {
+            var x = Phaser.Math.RND.between(0, 800);
+            var y = Phaser.Math.RND.between(0, 600);
+           
+            var newFishFood = this.fishFood.create(x, y, 'ball');
+        }
 
         this.physics.add.collider(this.fishFood);
         this.physics.add.overlap(this.ball, this.fishFood, collectFood, null, this);
@@ -49,6 +48,7 @@ export default class Game extends Phaser.Scene {
             fishFood.disableBody(true, true);
         }
     }
+
     update() {
         /** @type {Phaser.Physics.Arcade.StaticBody} */
         //const body = this.paddleLeft.body
