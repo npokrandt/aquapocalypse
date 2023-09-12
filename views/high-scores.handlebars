@@ -1,0 +1,9 @@
+<h2>High Scores</h2>
+<div>
+    <ol>
+{{#each scores as |score| }}
+        <li>{{ score.user.name }} --- {{ score.score }}</li><br />
+{{/each}}
+    </ol>
+</div>
+    
