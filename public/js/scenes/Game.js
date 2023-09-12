@@ -4,7 +4,7 @@ export default class Game extends Phaser.Scene {
     //not sure what this does, but seems good to have
     preload()
     {
-
+        //this.load.image('fishFood', 'assets/fishFood.png')
     }
 
     //create the game
@@ -14,7 +14,6 @@ export default class Game extends Phaser.Scene {
         //const camera = this.cameras.main
         this.add.image(0, 0, 'bg')
 
-        //this.physics.add.group()
         //will be a fish soon
         this.ball = this.add.circle(400, 250, 30, 0x0f4d12, 1)
         this.physics.add.existing(this.ball)
@@ -31,6 +30,24 @@ export default class Game extends Phaser.Scene {
         scoreLabel.setOrigin(0.5, 0.5)
         
         this.cursors = this.input.keyboard.createCursorKeys()
+
+        //fishFood starts here
+        this.fishFood = this.physics.add.group({
+            key: 'fishFood',
+            repeat: 10,
+            setXY: { x: 50, y: 100, stepX: 60 }
+        });
+
+        this.fishFood.children.iterate(function(child) {
+            child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
+        })
+
+        this.physics.add.collider(this.fishFood);
+        this.physics.add.overlap(this.ball, this.fishFood, collectFood, null, this);
+
+        function collectFood (ball, fishFood) {
+            fishFood.disableBody(true, true);
+        }
     }
     update() {
         /** @type {Phaser.Physics.Arcade.StaticBody} */
