@@ -9,8 +9,7 @@ export default class Game extends Phaser.Scene {
     //not sure what this does, but seems good to have
     preload()
     {
-        //this.load.image('bg', 'assets/pics/the-end-by-iloe-and-made.jpg')
-        //this.load.image('block', 'assets/sprites/block.png')
+        //this.load.image('fishFood', 'assets/fishFood.png')
     }
 
     //create the game
@@ -36,7 +35,8 @@ export default class Game extends Phaser.Scene {
         //can't leave world, stays 
         this.ball.body.setCollideWorldBounds(true, 1, 1)
 
-        const scoreLabel = this.add.text(400, 50, 'Score: 3', {
+        let score = 0;
+        const scoreLabel = this.add.text(400, 50, 'Score: 0', {
             fontSize: 48,
             color: 'white'
         })
@@ -44,7 +44,28 @@ export default class Game extends Phaser.Scene {
         scoreLabel.setOrigin(0.5, 0.5)
         
         this.cursors = this.input.keyboard.createCursorKeys()
+
+        //fishFood starts here
+        this.fishFood = this.physics.add.group();
+       
+        for (var i = 0; i < 20; i++) {
+            var x = Phaser.Math.RND.between(0, 800);
+            var y = Phaser.Math.RND.between(0, 600);
+           
+            var newFishFood = this.fishFood.create(x, y, 'ball');
+            //where is newFishFood supposed to be used? it's still gray
+        }
+
+        this.physics.add.collider(this.fishFood);
+        this.physics.add.overlap(this.ball, this.fishFood, collectFood, null, this);
+
+        function collectFood (ball, fishFood) {
+            fishFood.disableBody(true, true);
+            score += 10;
+            scoreLabel.setText('Score: ' + score);
+        }
     }
+
     update() {
         /** @type {Phaser.Physics.Arcade.StaticBody} */
         //const body = this.paddleLeft.body
