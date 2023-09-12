@@ -1,10 +1,9 @@
 const User = require('./User');
-const Player = require('./Player')
-const Enemy = require('./Enemy')
+const Score = require('./Scores')
 
 //associations, if any
-User.hasOne(Player, {foreignKey: 'user_id'})
+User.hasMany(Score, {foreignKey: 'user_id'})
 
-Player.belongsTo(User, {foreignKey: 'user_id'})
+Score.belongsTo(User, {foreignKey: 'user_id'})
 
-module.exports = { User, Player, Enemy };
+module.exports = { User, Score };
