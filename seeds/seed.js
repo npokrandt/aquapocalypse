@@ -11,7 +11,7 @@ const seedDatabase = async () => {
   let users = await User.bulkCreate(userData, {
     individualHooks: true,
     returning: true,
-    raw: true,
+    // raw: true,
   });
   users = users.map(user => user.dataValues)
   console.log(users)
