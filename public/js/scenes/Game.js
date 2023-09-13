@@ -14,7 +14,7 @@ export default class Game extends Phaser.Scene {
 
     //create the game
     create() { 
-       //this.physics.world.setBounds(0, 0, 10000, 10000)
+       this.physics.world.setBounds(0, 0, 4000, 2500)
 
         //this.add.image(0, 0, 'bg')
        // this.add.image(x, y, 'enemies')
@@ -27,7 +27,7 @@ export default class Game extends Phaser.Scene {
         // .setScrollFactor(0, 0)
 
         //will be a fish soon
-        this.ball = this.add.circle(400, 250, 30, 0x0f4d12, 1)
+        this.ball = this.add.circle(2000, 1250, 30, 0x0f4d12, 1)
         this.physics.add.existing(this.ball)
         //this.ball.body.setBounce(1, 1)
         
@@ -35,7 +35,7 @@ export default class Game extends Phaser.Scene {
         this.ball.body.setCollideWorldBounds(true, 1, 1)
 
         let score = 0;
-        this.scoreLabel = this.add.text(400, 50, 'Score: 0', {
+        this.scoreLabel = this.add.text(2000, 1050, 'Score: 0', {
             fontSize: 48,
             color: 'white'
         })
@@ -105,7 +105,7 @@ export default class Game extends Phaser.Scene {
         /** @type {Phaser.Physics.Arcade.StaticBody} */
         //const body = this.paddleLeft.body
 
-        var speed = 1
+        var speed = 10
         //the ball can move in all eight directions
         if (this.cursors.up.isDown && this.cursors.left.isDown){
             this.ball.y -= speed
@@ -119,7 +119,7 @@ export default class Game extends Phaser.Scene {
         } else if (this.cursors.up.isDown && this.cursors.right.isDown){
             this.ball.y -= speed
             this.ball.x += speed
-            if (this.scoreLabel.x < 770){
+            if (this.scoreLabel.x < 3970){
                 this.scoreLabel.x += speed
             }
             if (this.scoreLabel.y > -170){
@@ -131,16 +131,16 @@ export default class Game extends Phaser.Scene {
             if (this.scoreLabel.x > 30){
                 this.scoreLabel.x -= speed
             }
-            if (this.scoreLabel.y < 270){
+            if (this.scoreLabel.y < 2270){
                 this.scoreLabel.y += speed
             }
         }else if (this.cursors.down.isDown && this.cursors.right.isDown){
             this.ball.y += speed
             this.ball.x += speed
-            if (this.scoreLabel.x < 770){
+            if (this.scoreLabel.x < 3970){
                 this.scoreLabel.x += speed
             }
-            if (this.scoreLabel.y < 270){
+            if (this.scoreLabel.y < 2270){
                 this.scoreLabel.y += speed
             }
         } else if (this.cursors.up.isDown) {
@@ -150,16 +150,17 @@ export default class Game extends Phaser.Scene {
             }
         } else if (this.cursors.down.isDown) {
             this.ball.y += speed
-            if (this.scoreLabel.y < 270){
+            if (this.scoreLabel.y < 2270){
                 this.scoreLabel.y += speed
             }
         } else if (this.cursors.right.isDown){
             this.ball.x += speed
-            if (this.scoreLabel.x < 770){
+            if (this.scoreLabel.x < 3970){
                 this.scoreLabel.x += speed
             }
         } else if (this.cursors.left.isDown){
             this.ball.x -= speed
+            //console.log(this.ball.x)
             if (this.scoreLabel.x > 30){
                 this.scoreLabel.x -= speed
             }

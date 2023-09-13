@@ -25,3 +25,9 @@ ground -> fish layer -> hidey holes e.g. lily pads
 stick items to the camera
 
 Other phaser tutorials
+
+Current size = 800 x 500
+
+Would like 5x larger
+
+Final size = 4000 x 2500
