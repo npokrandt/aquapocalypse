@@ -51,9 +51,7 @@ export default class Game extends Phaser.Scene {
         for (var i = 0; i < 20; i++) {
             var x = Phaser.Math.RND.between(0, 800);
             var y = Phaser.Math.RND.between(0, 600);
-           
-            var newFishFood = this.fishFood.create(x, y, 'ball');
-            //where is newFishFood supposed to be used? it's still gray
+            this.fishFood.create(x, y, 'ball');
         }
 
         this.physics.add.collider(this.fishFood);
