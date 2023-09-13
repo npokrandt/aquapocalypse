@@ -1,3 +1,5 @@
+import EventEmitter from "events"
+
 const { Wrap } = Phaser.Math
 //const { black, white } = colors.hexColors;
 
@@ -9,7 +11,7 @@ export default class Game extends Phaser.Scene {
     //not sure what this does, but seems good to have
     preload()
     {
-        //this.load.image('fishFood', 'assets/fishFood.png')
+        this.load.image('enemies', 'assets/enemy-placeholder.jpg')
     }
 
     //create the game
@@ -17,7 +19,7 @@ export default class Game extends Phaser.Scene {
        // this.physics.world.setBounds(0, 0, 10000, 10000)
 
         //this.add.image(0, 0, 'bg')
-
+        this.add.image(x, y, 'enemies')
         // const {width, height} = camera
 
         // const grid = this.add
@@ -63,10 +65,39 @@ export default class Game extends Phaser.Scene {
             fishFood.disableBody(true, true);
             score += 10;
             this.scoreLabel.setText('Score: ' + score);
+
+            if (fishFood.countActive(true) === 0)
+            {
+                fishFood.children.iterate(function (child) {
+                    child.enableBody(true, child.x, 0, true, true);
+                });
+
+                var x = (ball.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+
+                var enemies = enemies.create(x, 16, 'enemies');
+                enemies.setBounce(1);
+                enemies.setCollideWorldBounds(true);
+                enemies.setVelocity(Phaser.Math.Between(-200, 200), 20);
+            }
         }
 
         //enemy starts here
-        this.enemy = this.physics.add.circle();
+        this.enemies = this.physics.add.group();
+
+        for (var i = 0; i < 5; i++) {
+            var x = Phaser.Math.RND.between(0, 800);
+            var y = Phaser.Math.RND.between(0, 600);
+            this.enemies.create(x, y, 'ball');
+        }
+
+        this.physics.add.collider(this.enemies)
+        this.physics.add.collider(this.ball, this.enemies, meetEnemy, null, this)
+
+        function meetEnemy(ball, enemies) {
+            enemies.disableBody(true, true);
+            score += 100; 
+            this.scoreLabel.setText('Score: ' + score)
+        }   
         
         
     }
