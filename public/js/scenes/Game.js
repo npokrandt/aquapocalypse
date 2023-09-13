@@ -1,5 +1,3 @@
-import EventEmitter from "events"
-
 const { Wrap } = Phaser.Math
 //const { black, white } = colors.hexColors;
 
@@ -11,7 +9,7 @@ export default class Game extends Phaser.Scene {
     //not sure what this does, but seems good to have
     preload()
     {
-        this.load.image('enemies', 'assets/enemy-placeholder.jpg')
+        //this.load.image('enemies', 'assets/enemy-placeholder.jpg')
     }
 
     //create the game
@@ -19,7 +17,7 @@ export default class Game extends Phaser.Scene {
        //this.physics.world.setBounds(0, 0, 10000, 10000)
 
         //this.add.image(0, 0, 'bg')
-        this.add.image(x, y, 'enemies')
+       // this.add.image(x, y, 'enemies')
         // const {width, height} = camera
 
         // const grid = this.add
@@ -51,35 +49,36 @@ export default class Game extends Phaser.Scene {
 
         //fishFood starts here
         this.fishFood = this.physics.add.group();
-       
+
         for (var i = 0; i < 20; i++) {
             var x = Phaser.Math.RND.between(0, 800);
             var y = Phaser.Math.RND.between(0, 600);
-            this.fishFood.create(x, y, 'ball');
+            this.fishFood.create(this.add.circle(x, y, 5, 0xffffff, 1));
         }
 
-        this.physics.add.collider(this.fishFood);
+        this.physics.add.collider(this.ball, this.fishFood);
         this.physics.add.overlap(this.ball, this.fishFood, collectFood, null, this);
 
         function collectFood (ball, fishFood) {
             fishFood.disableBody(true, true);
             score += 10;
             this.scoreLabel.setText('Score: ' + score);
+            console.log('collect food')
 
-            if (fishFood.countActive(true) === 0)
-            {
-                fishFood.children.iterate(function (child) {
-                    child.enableBody(true, child.x, 0, true, true);
-                });
+            // if (fishFood.countActive(true) === 0)
+            // {
+            //     fishFood.children.iterate(function (child) {
+            //         child.enableBody(true, child.x, 0, true, true);
+            //     });
 
-                var x = (ball.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+                // var x = (ball.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
-                var enemies = enemies.create(x, 16, 'enemies');
-                enemies.setBounce(1);
-                enemies.setCollideWorldBounds(true);
-                enemies.setVelocity(Phaser.Math.Between(-200, 200), 20);
-            }
-        }
+                // var enemies = enemies.create(x, 16, 'enemies');
+                // enemies.setBounce(1);
+                // enemies.setCollideWorldBounds(true);
+                // enemies.setVelocity(Phaser.Math.Between(-200, 200), 20);
+            //}
+       }
 
         //enemy starts here
         this.enemies = this.physics.add.group();
