@@ -16,7 +16,7 @@ export default class Game extends Phaser.Scene {
 
     //create the game
     create() { 
-       // this.physics.world.setBounds(0, 0, 10000, 10000)
+       //this.physics.world.setBounds(0, 0, 10000, 10000)
 
         //this.add.image(0, 0, 'bg')
         this.add.image(x, y, 'enemies')
@@ -31,7 +31,7 @@ export default class Game extends Phaser.Scene {
         //will be a fish soon
         this.ball = this.add.circle(400, 250, 30, 0x0f4d12, 1)
         this.physics.add.existing(this.ball)
-        this.ball.body.setBounce(1, 1)
+        //this.ball.body.setBounce(1, 1)
         
         //can't leave world, stays 
         this.ball.body.setCollideWorldBounds(true, 1, 1)
@@ -106,41 +106,64 @@ export default class Game extends Phaser.Scene {
         /** @type {Phaser.Physics.Arcade.StaticBody} */
         //const body = this.paddleLeft.body
 
+        var speed = 1
         //the ball can move in all eight directions
         if (this.cursors.up.isDown && this.cursors.left.isDown){
-            this.ball.y -= 1
-            this.ball.x -= 1
-            this.scoreLabel.x -= 1
-            this.scoreLabel.y -= 1
+            this.ball.y -= speed
+            this.ball.x -= speed
+            if (this.scoreLabel.x > 30){
+                this.scoreLabel.x -= speed
+            }
+            if (this.scoreLabel.y > -170){
+                this.scoreLabel.y -= speed
+            }
         } else if (this.cursors.up.isDown && this.cursors.right.isDown){
-            this.ball.y -= 1
-            this.ball.x += 1
-            this.scoreLabel.x += 1
-            this.scoreLabel.y -= 1
+            this.ball.y -= speed
+            this.ball.x += speed
+            if (this.scoreLabel.x < 770){
+                this.scoreLabel.x += speed
+            }
+            if (this.scoreLabel.y > -170){
+                this.scoreLabel.y -= speed
+            }
         }else if (this.cursors.down.isDown && this.cursors.left.isDown){
-            this.ball.y += 1
-            this.ball.x -= 1
-            this.scoreLabel.x -= 1
-            this.scoreLabel.y += 1
+            this.ball.y += speed
+            this.ball.x -= speed
+            if (this.scoreLabel.x > 30){
+                this.scoreLabel.x -= speed
+            }
+            if (this.scoreLabel.y < 270){
+                this.scoreLabel.y += speed
+            }
         }else if (this.cursors.down.isDown && this.cursors.right.isDown){
-            this.ball.y += 1
-            this.ball.x += 1
-            this.scoreLabel.x += 1
-            this.scoreLabel.y += 1
+            this.ball.y += speed
+            this.ball.x += speed
+            if (this.scoreLabel.x < 770){
+                this.scoreLabel.x += speed
+            }
+            if (this.scoreLabel.y < 270){
+                this.scoreLabel.y += speed
+            }
         } else if (this.cursors.up.isDown) {
-            this.ball.y -= 1
-            this.scoreLabel.y -= 1
-            //body.updateFromGameObject()
+            this.ball.y -= speed
+            if (this.scoreLabel.y > -170){
+                this.scoreLabel.y -= speed
+            }
         } else if (this.cursors.down.isDown) {
-            this.ball.y += 1
-            this.scoreLabel.y += 1
-            //body.updateFromGameObject()
+            this.ball.y += speed
+            if (this.scoreLabel.y < 270){
+                this.scoreLabel.y += speed
+            }
         } else if (this.cursors.right.isDown){
-            this.ball.x += 1
-            this.scoreLabel.x += 1
+            this.ball.x += speed
+            if (this.scoreLabel.x < 770){
+                this.scoreLabel.x += speed
+            }
         } else if (this.cursors.left.isDown){
-            this.ball.x -= 1
-            this.scoreLabel.x -= 1
+            this.ball.x -= speed
+            if (this.scoreLabel.x > 30){
+                this.scoreLabel.x -= speed
+            }
         }
         
         //const diff = this.ball.y - this.paddleRight.y
@@ -148,7 +171,9 @@ export default class Game extends Phaser.Scene {
         //     return
         // }
         
-        if (this.ball.x < -30) {
+        if (this.ball.x <= 25) {
+            //console.log(this.ball.x)
+            //this.scoreLabel.x += 1
             // scored on left side
             //this.IncrementRightScore()
         } else if (this.ball.x > 830) {
