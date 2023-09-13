@@ -1,5 +1,10 @@
+const { Wrap } = Phaser.Math
+//const { black, white } = colors.hexColors;
+
+const cellW = 100
+const cellH = 100
+
 export default class Game extends Phaser.Scene {
-    
 
     //not sure what this does, but seems good to have
     preload()
@@ -11,8 +16,15 @@ export default class Game extends Phaser.Scene {
     create() { 
        // this.physics.world.setBounds(0, 0, 10000, 10000)
 
-        //const camera = this.cameras.main
-        this.add.image(0, 0, 'bg')
+        //this.add.image(0, 0, 'bg')
+
+        // const {width, height} = camera
+
+        // const grid = this.add
+        // .grid(0, 0, width + cellW, height + cellH, cellW, cellH)
+        // .setAlpha(0.2)
+        // .setOrigin(0, 0)
+        // .setScrollFactor(0, 0)
 
         //will be a fish soon
         this.ball = this.add.circle(400, 250, 30, 0x0f4d12, 1)
@@ -23,12 +35,15 @@ export default class Game extends Phaser.Scene {
         this.ball.body.setCollideWorldBounds(true, 1, 1)
 
         let score = 0;
-        const scoreLabel = this.add.text(400, 50, 'Score: 0', {
+        this.scoreLabel = this.add.text(400, 50, 'Score: 0', {
             fontSize: 48,
             color: 'white'
         })
 
-        scoreLabel.setOrigin(0.5, 0.5)
+        this.scoreLabel.setOrigin(0.5, 0.5)
+
+        this.cameras.main.startFollow(this.ball)
+        //this.cameras.main.startFollow(scoreLabel)
         
         this.cursors = this.input.keyboard.createCursorKeys()
 
@@ -47,7 +62,7 @@ export default class Game extends Phaser.Scene {
         function collectFood (ball, fishFood) {
             fishFood.disableBody(true, true);
             score += 10;
-            scoreLabel.setText('Score: ' + score);
+            this.scoreLabel.setText('Score: ' + score);
         }
     }
 
@@ -59,25 +74,37 @@ export default class Game extends Phaser.Scene {
         if (this.cursors.up.isDown && this.cursors.left.isDown){
             this.ball.y -= 1
             this.ball.x -= 1
+            this.scoreLabel.x -= 1
+            this.scoreLabel.y -= 1
         } else if (this.cursors.up.isDown && this.cursors.right.isDown){
             this.ball.y -= 1
             this.ball.x += 1
+            this.scoreLabel.x += 1
+            this.scoreLabel.y -= 1
         }else if (this.cursors.down.isDown && this.cursors.left.isDown){
             this.ball.y += 1
             this.ball.x -= 1
+            this.scoreLabel.x -= 1
+            this.scoreLabel.y += 1
         }else if (this.cursors.down.isDown && this.cursors.right.isDown){
             this.ball.y += 1
             this.ball.x += 1
+            this.scoreLabel.x += 1
+            this.scoreLabel.y += 1
         } else if (this.cursors.up.isDown) {
             this.ball.y -= 1
+            this.scoreLabel.y -= 1
             //body.updateFromGameObject()
         } else if (this.cursors.down.isDown) {
             this.ball.y += 1
+            this.scoreLabel.y += 1
             //body.updateFromGameObject()
         } else if (this.cursors.right.isDown){
             this.ball.x += 1
+            this.scoreLabel.x += 1
         } else if (this.cursors.left.isDown){
             this.ball.x -= 1
+            this.scoreLabel.x -= 1
         }
         
         //const diff = this.ball.y - this.paddleRight.y
