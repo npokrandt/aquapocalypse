@@ -49,6 +49,11 @@ export default class Game extends Phaser.Scene {
             score += 10;
             scoreLabel.setText('Score: ' + score);
         }
+
+        //enemy starts here
+        this.enemy = this.physics.add.circle();
+        
+        
     }
 
     update() {
