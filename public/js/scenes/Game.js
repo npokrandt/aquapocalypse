@@ -48,22 +48,31 @@ export default class Game extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys()
 
         //fishFood starts here
-        this.fishFood = this.physics.add.group();
+        this.fishFood = this.physics.add.staticGroup({
+            key: 'fishFood',
+            frameQuantity: 100,
+            immovable: true
+        });
 
-        for (var i = 0; i < 20; i++) {
-            var x = Phaser.Math.RND.between(0, 800);
-            var y = Phaser.Math.RND.between(0, 600);
+        const children = this.fishFood.getChildren();
+
+        for (let i = 0; i < children.length; i++) {
+            const x = Phaser.Math.RND.between(0, 4000);
+            const y = Phaser.Math.RND.between(0, 2500);
+            children[i].setPosition(x, y);
+
             this.fishFood.create(this.add.circle(x, y, 5, 0xffffff, 1));
         }
 
-        this.physics.add.collider(this.ball, this.fishFood);
-        this.physics.add.overlap(this.ball, this.fishFood, collectFood, null, this);
+        this.fishFood.refresh();
 
-        function collectFood (ball, fishFood) {
-            fishFood.disableBody(true, true);
-            score += 10;
-            this.scoreLabel.setText('Score: ' + score);
-            console.log('collect food')
+        // this.physics.add.collider(this.ball, this.fishFood);
+        
+        this.physics.add.overlap(this.ball, this.fishFood, this.collectFood, null, this);
+
+        // function collectFood (ball, fishFood) {
+        //     // fishFood.disableBody(true, true);
+        
 
             // if (fishFood.countActive(true) === 0)
             // {
@@ -78,25 +87,25 @@ export default class Game extends Phaser.Scene {
                 // enemies.setCollideWorldBounds(true);
                 // enemies.setVelocity(Phaser.Math.Between(-200, 200), 20);
             //}
-       }
+       //}
 
         //enemy starts here
-        this.enemies = this.physics.add.group();
+        // this.enemies = this.physics.add.group();
 
-        for (var i = 0; i < 5; i++) {
-            var x = Phaser.Math.RND.between(0, 800);
-            var y = Phaser.Math.RND.between(0, 600);
-            this.enemies.create(x, y, 'ball');
-        }
+        // for (var i = 0; i < 50; i++) {
+        //     var x = Phaser.Math.RND.between(0, 800);
+        //     var y = Phaser.Math.RND.between(0, 600);
+        //     this.enemies.create(x, y, 'ball');
+        // }
 
-        this.physics.add.collider(this.enemies)
-        this.physics.add.collider(this.ball, this.enemies, meetEnemy, null, this)
+        // this.physics.add.collider(this.enemies)
+        // this.physics.add.collider(this.ball, this.enemies, meetEnemy, null, this)
 
-        function meetEnemy(ball, enemies) {
-            enemies.disableBody(true, true);
-            score += 100; 
-            this.scoreLabel.setText('Score: ' + score)
-        }   
+        // function meetEnemy(ball, enemies) {
+        //     enemies.disableBody(true, true);
+        //     score += 100; 
+        //     this.scoreLabel.setText('Score: ' + score)
+        // }   
         
         
     }
@@ -105,7 +114,7 @@ export default class Game extends Phaser.Scene {
         /** @type {Phaser.Physics.Arcade.StaticBody} */
         //const body = this.paddleLeft.body
 
-        var speed = 10
+        var speed = 5
         //the ball can move in all eight directions
         if (this.cursors.up.isDown && this.cursors.left.isDown){
             this.ball.y -= speed
@@ -166,6 +175,17 @@ export default class Game extends Phaser.Scene {
             }
         }
         
+        //when the fish gets fish food:
+        function collectFood(ball, fishFood) {
+            this.fishFood.killAndHide(fishFood);
+            fishFood.body.enable = false;
+
+            score += 10;
+            this.scoreLabel.setText('Score: ' + score);
+            
+            console.log('collect food')
+        }
+
         //const diff = this.ball.y - this.paddleRight.y
         // if (Math.abs(diff) < 10) {
         //     return
