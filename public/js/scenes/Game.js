@@ -48,47 +48,25 @@ export default class Game extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys()
 
         //fishFood starts here
-        this.fishFood = this.physics.add.group({
-            key: 'fishFood',
-            frameQuantity: 10,
-            immovable: true
-        });
+        
+        this.foodPieces = this.physics.add.group();
 
-        
-        const children = this.fishFood.getChildren();
-        
-        for (let i = 0; i < 100; i++) {
-            const x = Phaser.Math.RND.between(0, 4000);
-            const y = Phaser.Math.RND.between(0, 2500);
-            children[i].setPosition(x, y);
-            
-            this.fishFood.create(this.add.circle(x, y, 5, 0xffffff, 1))
+        for (var i = 0; i < 200; i++) {
+            var x = Phaser.Math.RND.between(0, 4000);
+            var y = Phaser.Math.RND.between(0, 2500);
+            this.foodPieces.create(this.add.circle(x, y, 5, 0xffffff, 1));
         }
 
-        //this.fishFood.refresh();
+        Phaser.Actions.RandomRectangle(this.foodPieces.getChildren(), { x: 0, y: 0, width: 4000, height: 2500 });
 
-        // this.physics.add.collider(this.ball, this.fishFood);
-        
-        //this.physics.add.overlap(this.ball, this.fishFood, this.collectFood, null, this);
-
-        // function collectFood (ball, fishFood) {
-        //     // fishFood.disableBody(true, true);
-        
-
-            // if (fishFood.countActive(true) === 0)
-            // {
-            //     fishFood.children.iterate(function (child) {
-            //         child.enableBody(true, child.x, 0, true, true);
-            //     });
-
-                // var x = (ball.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-
-                // var enemies = enemies.create(x, 16, 'enemies');
-                // enemies.setBounce(1);
-                // enemies.setCollideWorldBounds(true);
-                // enemies.setVelocity(Phaser.Math.Between(-200, 200), 20);
-            //}
-       //}
+        this.physics.add.overlap (
+            this.ball, 
+            this.foodPieces,
+            null,
+            function eatFood (ball, foodPieces) {
+                console.log('FOOD FOOD FOOD')
+            }
+        );
 
         //enemy starts here
         // this.enemies = this.physics.add.group();
@@ -107,8 +85,6 @@ export default class Game extends Phaser.Scene {
         //     score += 100; 
         //     this.scoreLabel.setText('Score: ' + score)
         // }   
-        
-        
     }
 
     update() {
@@ -176,6 +152,7 @@ export default class Game extends Phaser.Scene {
             }
         }
 
+    
         //const diff = this.ball.y - this.paddleRight.y
         // if (Math.abs(diff) < 10) {
         //     return
