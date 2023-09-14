@@ -16,6 +16,8 @@ export default class Game extends Phaser.Scene {
     create() { 
        this.physics.world.setBounds(0, 0, 4000, 2500)
 
+       //this.cameras.main.setZoom(0.5)
+
         //this.add.image(0, 0, 'bg')
 
         // const {width, height} = camera
@@ -34,16 +36,17 @@ export default class Game extends Phaser.Scene {
         //can't leave world, stays 
         this.ball.body.setCollideWorldBounds(true, 1, 1)
 
+
         let score = 0;
-        this.scoreLabel = this.add.text(2000, 1050, 'Score: 0', {
+        this.scoreLabel = this.add.text(400, 50, 'Score: 0', {
             fontSize: 48,
             color: 'white'
         })
 
+        this.scoreLabel.setScrollFactor(0, 0)
         this.scoreLabel.setOrigin(0.5, 0.5)
 
         this.cameras.main.startFollow(this.ball)
-        //this.cameras.main.startFollow(scoreLabel)
         
         this.cursors = this.input.keyboard.createCursorKeys()
 
@@ -70,65 +73,28 @@ export default class Game extends Phaser.Scene {
         /** @type {Phaser.Physics.Arcade.StaticBody} */
         //const body = this.paddleLeft.body
 
-        var speed = 10
+        var speed = 3
         //the ball can move in all eight directions
         if (this.cursors.up.isDown && this.cursors.left.isDown){
             this.ball.y -= speed
             this.ball.x -= speed
-            if (this.scoreLabel.x > 30){
-                this.scoreLabel.x -= speed
-            }
-            if (this.scoreLabel.y > -170){
-                this.scoreLabel.y -= speed
-            }
         } else if (this.cursors.up.isDown && this.cursors.right.isDown){
             this.ball.y -= speed
             this.ball.x += speed
-            if (this.scoreLabel.x < 3970){
-                this.scoreLabel.x += speed
-            }
-            if (this.scoreLabel.y > -170){
-                this.scoreLabel.y -= speed
-            }
         }else if (this.cursors.down.isDown && this.cursors.left.isDown){
             this.ball.y += speed
             this.ball.x -= speed
-            if (this.scoreLabel.x > 30){
-                this.scoreLabel.x -= speed
-            }
-            if (this.scoreLabel.y < 2270){
-                this.scoreLabel.y += speed
-            }
         }else if (this.cursors.down.isDown && this.cursors.right.isDown){
             this.ball.y += speed
             this.ball.x += speed
-            if (this.scoreLabel.x < 3970){
-                this.scoreLabel.x += speed
-            }
-            if (this.scoreLabel.y < 2270){
-                this.scoreLabel.y += speed
-            }
         } else if (this.cursors.up.isDown) {
             this.ball.y -= speed
-            if (this.scoreLabel.y > -170){
-                this.scoreLabel.y -= speed
-            }
         } else if (this.cursors.down.isDown) {
             this.ball.y += speed
-            if (this.scoreLabel.y < 2270){
-                this.scoreLabel.y += speed
-            }
         } else if (this.cursors.right.isDown){
             this.ball.x += speed
-            if (this.scoreLabel.x < 3970){
-                this.scoreLabel.x += speed
-            }
         } else if (this.cursors.left.isDown){
             this.ball.x -= speed
-            //console.log(this.ball.x)
-            if (this.scoreLabel.x > 30){
-                this.scoreLabel.x -= speed
-            }
         }
         
         //const diff = this.ball.y - this.paddleRight.y
