@@ -26,7 +26,8 @@ router.get('/game', (req, res) => {
 
 router.get('/high-scores', async (req, res) => {
   const scoreData = await Score.findAll({
-    include: User
+    include: User,
+    order: [['score', 'DESC']]
   })
   const scores = scoreData.map(score => score.get({ plain: true }))
   console.log(scores)
