@@ -48,23 +48,31 @@ export default class Game extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys()
 
         //fishFood starts here
-        
-        this.foodPieces = this.physics.add.group();
+        this.foodPieces = this.physics.add.group(); //Why won't the group accept the white circles??
 
         for (var i = 0; i < 200; i++) {
             var x = Phaser.Math.RND.between(0, 4000);
             var y = Phaser.Math.RND.between(0, 2500);
-            this.foodPieces.create(this.add.circle(x, y, 5, 0xffffff, 1));
+            this.foodPieces.create(); //Why won't these circles be part of the group?? this.add.circle(x, y, 5, 0xffffff, 1)
         }
 
-        Phaser.Actions.RandomRectangle(this.foodPieces.getChildren(), { x: 0, y: 0, width: 4000, height: 2500 });
+        Phaser.Actions.RandomRectangle(
+            this.foodPieces.getChildren(), 
+            { 
+                x: 0, 
+                y: 0, 
+                width: 4000, 
+                height: 2500 
+            });
 
         this.physics.add.overlap (
             this.ball, 
             this.foodPieces,
             null,
             function eatFood (ball, foodPieces) {
-                console.log('FOOD FOOD FOOD')
+                foodPieces.disableBody(true, true);
+                //score += 10; 
+                //this.scoreLabel.setText('Score: ' + score)
             }
         );
 
