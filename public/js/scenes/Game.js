@@ -9,7 +9,7 @@ export default class Game extends Phaser.Scene {
     //not sure what this does, but seems good to have
     preload()
     {
-        //this.load.image('enemies', 'assets/enemy-placeholder.jpg')
+        this.load.image('enemies', 'assets/bad-fish.png')
     }
 
     //create the game
@@ -19,7 +19,7 @@ export default class Game extends Phaser.Scene {
        //this.cameras.main.setZoom(0.5)
 
         //this.add.image(0, 0, 'bg')
-       // this.add.image(x, y, 'enemies')
+        this.add.image(x, y, 'enemies')
         // const {width, height} = camera
 
         // const grid = this.add
@@ -36,21 +36,7 @@ export default class Game extends Phaser.Scene {
         //can't leave world, stays 
         this.ball.body.setCollideWorldBounds(true, 1, 1)
 
-
-        let score = 0;
-        this.scoreLabel = this.add.text(400, 50, 'Score: 0', {
-            fontSize: 48,
-            color: 'white'
-        })
-
-        this.scoreLabel.setScrollFactor(0, 0)
-        this.scoreLabel.setOrigin(0.5, 0.5)
-
-        this.cameras.main.startFollow(this.ball)
-        
-        this.cursors = this.input.keyboard.createCursorKeys()
-
-        //fishFood starts here
+        //fish food starts here
         this.foodPieces = this.physics.add.group(); //Why won't the group accept the white circles??
 
         for (var i = 0; i < 200; i++) {
@@ -67,19 +53,20 @@ export default class Game extends Phaser.Scene {
                 width: 4000, 
                 height: 2500 
             });
-
+       
         this.physics.add.overlap (
             this.ball, 
             this.foodPieces,
             null,
             function eatFood (ball, foodPieces) {
                 foodPieces.disableBody(true, true);
-                //score += 10; 
-                //this.scoreLabel.setText('Score: ' + score)
+                score += 10; 
+                //this.scoreLabel.setText('Score: ' + this.score)
+                console.log(score)
             }
-        );
+         );
 
-        //enemy starts here
+        //enemy fishies start here 
         // this.enemies = this.physics.add.group();
 
         // for (var i = 0; i < 50; i++) {
@@ -95,7 +82,21 @@ export default class Game extends Phaser.Scene {
         //     enemies.disableBody(true, true);
         //     score += 100; 
         //     this.scoreLabel.setText('Score: ' + score)
-        // }   
+        // }
+
+        //score
+        let score = 0;
+        this.scoreLabel = this.add.text(400, 50, 'Score: 0', {
+            fontSize: 48,
+            color: 'white'
+        })
+
+        this.scoreLabel.setScrollFactor(0, 0)
+        this.scoreLabel.setOrigin(0.5, 0.5)
+
+        this.cameras.main.startFollow(this.ball)
+        
+        this.cursors = this.input.keyboard.createCursorKeys()   
     }
 
     update() {
