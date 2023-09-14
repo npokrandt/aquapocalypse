@@ -79,15 +79,32 @@ export default class Game extends Phaser.Scene {
          
 
         //enemy fishies start here 
-        this.enemies = this.physics.add.group(enemy);
+        this.enemies = this.physics.add.group({
+            key: 'enemies',
+            frameQuantity: 10,
+            bounceX: 1,
+            bounceY: 1,
+            collideWorldBounds: true,
+            velocityX: 20,
+            velocityY: -10,
+            setScale: {x: 0.25, y: 0.25}
+        });
 
-        for (var i = 0; i < 100; i++) {
-            var x = Phaser.Math.RND.between(0, 4000);
-            var y = Phaser.Math.RND.between(0, 2500);
-            const enemy = this.physics.add.sprite(x, y, 'enemies');
-            enemy.setScale(0.25, 0.25);
-            enemy.setVelocity(1, 1)
+        for (const enemy of this.enemies.getChildren()) {
+            var x = Phaser.Math.RND.between(50, 80);
+            var y = Phaser.Math.RND.between(50, 80);
+            enemy.setVelocity(x, y)
         }
+        //this.enemies.body.setCollideWorldBounds(true, 1, 1)
+
+        // for (var i = 0; i < 100; i++) {
+        //     var x = Phaser.Math.RND.between(0, 4000);
+        //     var y = Phaser.Math.RND.between(0, 2500);
+        //     const enemy = this.physics.add.sprite(x, y, 'enemies');
+        //     enemy.setScale(0.25, 0.25);
+        //     enemy.setVelocity(-10, 10)
+        //     this.enemies.add(enemy, true)
+        // }
 
         //this.physics.add.collider(this.foodPieces, this.enemies);
         this.physics.add.collider(
