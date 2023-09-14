@@ -48,27 +48,28 @@ export default class Game extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys()
 
         //fishFood starts here
-        this.fishFood = this.physics.add.staticGroup({
+        this.fishFood = this.physics.add.group({
             key: 'fishFood',
-            frameQuantity: 100,
+            frameQuantity: 10,
             immovable: true
         });
 
+        
         const children = this.fishFood.getChildren();
-
-        for (let i = 0; i < children.length; i++) {
+        
+        for (let i = 0; i < 100; i++) {
             const x = Phaser.Math.RND.between(0, 4000);
             const y = Phaser.Math.RND.between(0, 2500);
             children[i].setPosition(x, y);
-
-            this.fishFood.create(this.add.circle(x, y, 5, 0xffffff, 1));
+            
+            this.fishFood.create(this.add.circle(x, y, 5, 0xffffff, 1))
         }
 
-        this.fishFood.refresh();
+        //this.fishFood.refresh();
 
         // this.physics.add.collider(this.ball, this.fishFood);
         
-        this.physics.add.overlap(this.ball, this.fishFood, this.collectFood, null, this);
+        //this.physics.add.overlap(this.ball, this.fishFood, this.collectFood, null, this);
 
         // function collectFood (ball, fishFood) {
         //     // fishFood.disableBody(true, true);
@@ -173,17 +174,6 @@ export default class Game extends Phaser.Scene {
             if (this.scoreLabel.x > 30){
                 this.scoreLabel.x -= speed
             }
-        }
-        
-        //when the fish gets fish food:
-        function collectFood(ball, fishFood) {
-            this.fishFood.killAndHide(fishFood);
-            fishFood.body.enable = false;
-
-            score += 10;
-            this.scoreLabel.setText('Score: ' + score);
-            
-            console.log('collect food')
         }
 
         //const diff = this.ball.y - this.paddleRight.y
