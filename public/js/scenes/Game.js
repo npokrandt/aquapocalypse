@@ -60,29 +60,27 @@ export default class Game extends Phaser.Scene {
             null,
             function eatFood (ball, foodPieces) {
                 foodPieces.disableBody(true, true);
-                score += 10; 
+                //score += 10; 
                 //this.scoreLabel.setText('Score: ' + this.score)
-                console.log(score)
+                //console.log(score)
             }
          );
 
         //enemy fishies start here 
-        // this.enemies = this.physics.add.group();
+        this.enemies = this.physics.add.group(
+            {
+                key: 'enemies',
+                repeat: 50,
+                setXY: {
+                    x: Phaser.Math.RND.between(0, 4000), 
+                    y: Phaser.Math.RND.between(0, 2500),
+                }
+            }
+        );
 
-        // for (var i = 0; i < 50; i++) {
-        //     var x = Phaser.Math.RND.between(0, 800);
-        //     var y = Phaser.Math.RND.between(0, 600);
-        //     this.enemies.create(x, y, 'ball');
-        // }
-
-        // this.physics.add.collider(this.enemies)
-        // this.physics.add.collider(this.ball, this.enemies, meetEnemy, null, this)
-
-        // function meetEnemy(ball, enemies) {
-        //     enemies.disableBody(true, true);
-        //     score += 100; 
-        //     this.scoreLabel.setText('Score: ' + score)
-        // }
+        this.enemies.children.iterate(function(child){
+            this.getChildren(child);
+        });
 
         //score
         let score = 0;
