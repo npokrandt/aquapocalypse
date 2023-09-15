@@ -15,16 +15,7 @@ export default class Game extends Phaser.Scene {
     create() { 
        this.physics.world.setBounds(0, 0, 4000, 2500)
 
-       //this.cameras.main.setZoom(0.5)
-
-        //this.add.image(0, 0, 'bg')
-        // const {width, height} = camera
-
-        // const grid = this.add
-        // .grid(0, 0, width + cellW, height + cellH, cellW, cellH)
-        // .setAlpha(0.2)
-        // .setOrigin(0, 0)
-        // .setScrollFactor(0, 0)
+       //this.cameras.main.setZoom(0.2)
 
         //will be a fish soon
         this.ball = this.add.circle(2000, 1250, 30, 0x0f4d12, 1)
@@ -93,13 +84,26 @@ export default class Game extends Phaser.Scene {
         this.physics.add.collider(
             this.ball, 
             this.enemies,
-            function gameOver(ball){
-                console.log('game over')
-            },
+            gameOver,
             null,
             this
         );
+
+        function gameOver(){
+            this.gameOverLabel = this.add.text(400, 250, 'GAME OVER!', {
+                fontSize: 100,
+                color: 'white'
+            })
+    
+            this.gameOverLabel.setScrollFactor(0, 0)
+            this.gameOverLabel.setOrigin(0.5, 0.5)
+            //prevent user from eating more food, and offer them the option to play again
+            //also save the user's score
+            //this.physics.remove.existing(this.ball)
+        }
+
     }
+
 
     update() {
         /** @type {Phaser.Physics.Arcade.StaticBody} */
