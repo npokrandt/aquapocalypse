@@ -8,7 +8,7 @@ export default class Game extends Phaser.Scene {
     //not sure what this does, but seems good to have
     preload()
     {
-        //this.load.image('enemies', 'assets/bad-fish.png')
+        this.load.image('enemies', 'assets/bad-fish.png')
     }
 
     //create the game
@@ -18,7 +18,6 @@ export default class Game extends Phaser.Scene {
        //this.cameras.main.setZoom(0.5)
 
         //this.add.image(0, 0, 'bg')
-        //this.add.image(x, y, 'enemies')
         // const {width, height} = camera
 
         // const grid = this.add
@@ -35,6 +34,33 @@ export default class Game extends Phaser.Scene {
         //can't leave world, stays 
         this.ball.body.setCollideWorldBounds(true, 1, 1)
 
+        //fish food starts here
+        this.foodPieces = this.physics.add.staticGroup(); 
+
+        for (var i = 0; i < 200; i++) {
+            var x = Phaser.Math.RND.between(0, 4000);
+            var y = Phaser.Math.RND.between(0, 2500);
+            this.foodPieces.create(x, y); 
+        }
+
+        //enemy fishies start here 
+        this.enemies = this.physics.add.group({
+            key: 'enemies',
+            frameQuantity: 10,
+            bounceX: 1,
+            bounceY: 1,
+            collideWorldBounds: true,
+            velocityX: 1,
+            velocityY: -1,
+            setScale: {x: 0.25, y: 0.25}
+        });
+
+        for (const enemy of this.enemies.getChildren()) {
+            let x = Phaser.Math.RND.between(50, 300);
+            let y = Phaser.Math.RND.between(50, 300);
+            enemy.setVelocity(x, y)
+        }
+
         //score
         let score = 0;
         this.scoreLabel = this.add.text(400, 50, 'Score: 0', {
@@ -50,52 +76,29 @@ export default class Game extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys()
 
 
-        //fish food starts here
-        this.foodPieces = this.physics.add.group(); //Why won't the group accept the white circles??
-
-        for (var i = 0; i < 200; i++) {
-            var x = Phaser.Math.RND.between(0, 4000);
-            var y = Phaser.Math.RND.between(0, 2500);
-            this.foodPieces.create(x, y); //Why won't these circles be part of the group?? this.add.circle(x, y, 5, 0xffffff, 1)
-        }
-
-        // Phaser.Actions.RandomRectangle(
-        //     this.foodPieces.getChildren(), 
-        //     { 
-        //         x: 0, 
-        //         y: 0, 
-        //         width: 4000, 
-        //         height: 2500 
-        //     });
-        this.physics.add.collider(this.ball, this.foodPieces)
         this.physics.add.overlap (
             this.ball, 
             this.foodPieces, 
             function eatFood(ball, food) {
                 food.disableBody(true, true);
                 score += 10; 
-                this.scoreLabel.setText('Score: ' + score)
+                this.scoreLabel.setText('Score: ' + score);
                 console.log(score)
             }, 
             null, 
             this);
-         
-        //enemy fishies start here 
-        this.enemies = this.physics.add.group(
-            {
-                key: 'enemies',
-                repeat: 50,
-                setXY: {
-                    x: Phaser.Math.RND.between(0, 4000), 
-                    y: Phaser.Math.RND.between(0, 2500),
-                }
-            }
-        );
 
-        this.enemies.children.iterate(
-            function(child) {
-                
-            })
+        this.physics.add.collider(this.ball, this.foodPieces)
+
+        this.physics.add.collider(
+            this.ball, 
+            this.enemies,
+            function gameOver(ball){
+                console.log('game over')
+            },
+            null,
+            this
+        );
     }
 
     update() {
