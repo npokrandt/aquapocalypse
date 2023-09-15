@@ -5,11 +5,11 @@ const cellH = 100
 
 export default class Game extends Phaser.Scene {
 
-    //not sure what this does, but seems good to have
     preload()
     {
         this.load.image('userFish', 'assets/user-fish.png')
         this.load.image('enemies', 'assets/bad-fish.png')
+        this.load.image('fishFood', 'assets/fish-food.png')
     }
 
     //create the game
@@ -29,22 +29,22 @@ export default class Game extends Phaser.Scene {
         // .setOrigin(0, 0)
         // .setScrollFactor(0, 0)
 
-        //user fish starts here 
+        //USER FISH
         this.userFish = this.add.sprite(2000, 100, 'userFish')
         this.userFish.setScale(0.03)
         this.physics.add.existing(this.userFish) 
         this.userFish.body.setCollideWorldBounds(true, 1, 1)
+   
+        //FISH FOOD
+        this.foodPieces = this.physics.add.group({
+            key: 'fishFood',
+            frameQuantity: 200,
+            setScale: {x: 0.02, y: 0.02}
+        }); 
 
-        //fish food starts here
-        this.foodPieces = this.physics.add.staticGroup(); 
+        Phaser.Actions.RandomRectangle(this.foodPieces.getChildren(), new Phaser.Geom.Rectangle(50, 50, 3900, 2400))
 
-        for (var i = 0; i < 200; i++) {
-            var x = Phaser.Math.RND.between(0, 4000);
-            var y = Phaser.Math.RND.between(0, 2500);
-            this.foodPieces.create(x, y); 
-        }
-
-        //enemy fishies start here 
+        //BAD FISHIES
         this.enemies = this.physics.add.group({
             key: 'enemies',
             frameQuantity: 10,
@@ -62,7 +62,7 @@ export default class Game extends Phaser.Scene {
             enemy.setVelocity(x, y)
         }
 
-        //score
+        //SCORE
         let score = 0;
         this.scoreLabel = this.add.text(400, 50, 'Score: 0', {
             fontSize: 48,
@@ -76,8 +76,7 @@ export default class Game extends Phaser.Scene {
         
         this.cursors = this.input.keyboard.createCursorKeys()
 
-        //colliders and interactions 
-        this.physics.add.collider(this.userFish, this.foodPieces)
+        //INTERACTIONS 
         this.physics.add.overlap (
             this.userFish, 
             this.foodPieces, 
@@ -140,53 +139,52 @@ export default class Game extends Phaser.Scene {
             this.gameOverLabel2.setScrollFactor(0, 0)
             this.gameOverLabel2.setOrigin(0.5, 0.5)
         }
-
     }
 
     update() {
         /** @type {Phaser.Physics.Arcade.StaticBody} */
-        //const body = this.paddleLeft.body
+    
+         var speed = 5
 
-        var speed = 5
         //the ball can move in all eight directions
         if (!this.gameOver){
             if (this.cursors.up.isDown && this.cursors.left.isDown){
                 this.userFish.y -= speed
                 this.userFish.x -= speed
+                this.userFish.flipX = true;
             } else if (this.cursors.up.isDown && this.cursors.right.isDown){
                 this.userFish.y -= speed
                 this.userFish.x += speed
+                this.userFish.flipX = false;
             }else if (this.cursors.down.isDown && this.cursors.left.isDown){
                 this.userFish.y += speed
                 this.userFish.x -= speed
+                this.userFish.flipX = true;
             }else if (this.cursors.down.isDown && this.cursors.right.isDown){
                 this.userFish.y += speed
                 this.userFish.x += speed
+                this.userFish.flipX = false;
             } else if (this.cursors.up.isDown) {
                 this.userFish.y -= speed
             } else if (this.cursors.down.isDown) {
                 this.userFish.y += speed
             } else if (this.cursors.right.isDown){
                 this.userFish.x += speed
+                this.userFish.flipX = false;
             } else if (this.cursors.left.isDown){
                 this.userFish.x -= speed
+                this.userFish.flipX = true;
             }
         }
-
-        //const diff = this.ball.y - this.paddleRight.y
-        // if (Math.abs(diff) < 10) {
-        //     return
-        // }
         
-        if (this.userFish.x <= 25) {
-            //console.log(this.ball.x)
-            //this.scoreLabel.x += 1
-            // scored on left side
-            //this.IncrementRightScore()
-        } else if (this.userFish.x > 830) {
-            // scored on right side
-            //this.IncrementLeftScore()
-        }
+    //     if (this.userFish.x <= 25) {
+    //         //console.log(this.ball.x)
+    //         //this.scoreLabel.x += 1
+    //         // scored on left side
+    //         //this.IncrementRightScore()
+    //     } else if (this.userFish.x > 830) {
+    //         // scored on right side
+    //         //this.IncrementLeftScore()
+    //     }
     }
-    
 }
