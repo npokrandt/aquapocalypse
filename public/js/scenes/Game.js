@@ -112,6 +112,25 @@ export default class Game extends Phaser.Scene {
             console.log(score)
             //save the user's score - how to do this?
 
+            const scoreObject = {
+                score
+            }
+
+            fetch('/api/scores/add-score', {
+                method: 'POST',
+                headers: {
+                    'Content-Type':'application/json'
+                },
+                body: JSON.stringify(scoreObject)
+            }).then(response => {
+                if(response.status === 201){
+                    console.log('score added')
+                    //window.location.assign('/')
+                } else {
+                    alert(response.status)
+                }
+            })
+            .catch (err => console.log(err))
             //fetch in the score post api route
             //add the score value, and the user's name somehow?
             //prompt for name if high score, or something
