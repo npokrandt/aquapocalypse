@@ -21,7 +21,9 @@ router.get('/', withAuth, async (req, res) => {
 });
 
 router.get('/game', (req, res) => {
-  res.render('game')
+  res.render('game', {
+    logged_in: req.session.logged_in,
+  })
 })
 
 router.get('/high-scores', async (req, res) => {
@@ -31,7 +33,10 @@ router.get('/high-scores', async (req, res) => {
   })
   const scores = scoreData.map(score => score.get({ plain: true }))
   console.log(scores)
-  res.render('high-scores', { scores })
+  res.render('high-scores', { 
+    scores,
+    logged_in: req.session.logged_in,
+   })
 })
 
 router.get('/login', (req, res) => {

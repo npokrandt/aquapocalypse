@@ -1,0 +1,56 @@
+/* ---------------- */
+/* global selectors */
+/* ---------------- */
+
+
+
+
+
+/* --------- */
+/* home page */
+/* --------- */
+
+.home-page-text {
+    margin-bottom: 0;
+}
+
+
+
+
+
+/* --------------- */
+/* high-score page */
+/* --------------- */
+
+.high-score-list {
+    display: flex;
+}
+
+.rank-column {
+    display: flex;
+    justify-content: end;
+}
+
+.name-column {
+    display: flex;
+    justify-content: start;
+}
+
+.score-column {
+    display: flex;
+    justify-content: end;
+}
+
+.high-score-title-text {
+    font-size: 2rem;
+}
+
+.high-score-text {
+    font-size: 1.5rem;
+    margin-bottom: 0;
+}
+
+.footer-text {
+    color: grey;
+    font-size: 1rem;
+}
