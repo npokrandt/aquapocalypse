@@ -31,14 +31,10 @@ export default class Game extends Phaser.Scene {
 
         //USER FISH
         this.userFish = this.add.sprite(2000, 100, 'userFish')
-
-
         this.userFish.setScale(0.03)
         this.physics.add.existing(this.userFish) 
         this.userFish.body.setCollideWorldBounds(true, 1, 1)
    
-
-
         //FISH FOOD
         this.foodPieces = this.physics.add.group({
             key: 'fishFood',
@@ -143,49 +139,52 @@ export default class Game extends Phaser.Scene {
             this.gameOverLabel2.setScrollFactor(0, 0)
             this.gameOverLabel2.setOrigin(0.5, 0.5)
         }
-
     }
 
     update() {
         /** @type {Phaser.Physics.Arcade.StaticBody} */
-        let isFlippedLeft = false;
-        let isFlippedRight = true;
+    
+         var speed = 5
 
-        var speed = 5
         //the ball can move in all eight directions
         if (!this.gameOver){
             if (this.cursors.up.isDown && this.cursors.left.isDown){
                 this.userFish.y -= speed
                 this.userFish.x -= speed
+                this.userFish.flipX = true;
             } else if (this.cursors.up.isDown && this.cursors.right.isDown){
                 this.userFish.y -= speed
                 this.userFish.x += speed
+                this.userFish.flipX = false;
             }else if (this.cursors.down.isDown && this.cursors.left.isDown){
                 this.userFish.y += speed
                 this.userFish.x -= speed
+                this.userFish.flipX = true;
             }else if (this.cursors.down.isDown && this.cursors.right.isDown){
                 this.userFish.y += speed
                 this.userFish.x += speed
+                this.userFish.flipX = false;
             } else if (this.cursors.up.isDown) {
                 this.userFish.y -= speed
             } else if (this.cursors.down.isDown) {
                 this.userFish.y += speed
             } else if (this.cursors.right.isDown){
                 this.userFish.x += speed
+                this.userFish.flipX = false;
             } else if (this.cursors.left.isDown){
                 this.userFish.x -= speed
+                this.userFish.flipX = true;
             }
         }
         
-        if (this.userFish.x <= 25) {
-            //console.log(this.ball.x)
-            //this.scoreLabel.x += 1
-            // scored on left side
-            //this.IncrementRightScore()
-        } else if (this.userFish.x > 830) {
-            // scored on right side
-            //this.IncrementLeftScore()
-        }
+    //     if (this.userFish.x <= 25) {
+    //         //console.log(this.ball.x)
+    //         //this.scoreLabel.x += 1
+    //         // scored on left side
+    //         //this.IncrementRightScore()
+    //     } else if (this.userFish.x > 830) {
+    //         // scored on right side
+    //         //this.IncrementLeftScore()
+    //     }
     }
-    
 }
