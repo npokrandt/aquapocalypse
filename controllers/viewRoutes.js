@@ -39,6 +39,10 @@ router.get('/high-scores', async (req, res) => {
    })
 })
 
+router.get('/create-account', (req, res) => {
+  res.render('create-account')
+})
+
 router.get('/login', (req, res) => {
   if (req.session.logged_in) {
     res.redirect('/');
