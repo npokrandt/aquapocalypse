@@ -1,9 +1,29 @@
-<h2>High Scores</h2>
-<div>
+<h2 class="text-center mb-5 high-score-title-text">High Scores</h2>
+<div class="my-5">
     <ol>
-{{#each scores as |score| }}
-        <li>{{ score.user.name }} --- {{ score.score }}</li><br />
-{{/each}}
+        {{#each scores as |score| }}
+        <li class="high-score-list">
+            <div class="col-4 rank-column">
+                <p class="high-score-text">{{@index}}.</p>
+            </div>
+            <div class="col-2 name-column">
+                <p class="high-score-text">{{score.user.name}}</p>
+            </div>
+            <div class="col-2 score-column">
+                <p class="high-score-text">{{score.score}}</p>
+            </div>
+        </li><br />
+        {{/each}}
     </ol>
+      {{!-- <script src="/js/high-scores.js"></script> --}}
+      <div class="display-flex justify-center">
+        <a href="/">
+            <button class="btn">Go Back</button>
+        </a>
+
+        <a href="/game">
+            <button class="btn">Start Game</button>
+        </a>
+      </div>
 </div>
     
