@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { User } = require('../../models');
-const scoresData = require('../../seeds/scoresData.json')
+//const scoresData = require('../../seeds/scoresData.json')
 
 router.post('/login', async (req, res) => {
   try {

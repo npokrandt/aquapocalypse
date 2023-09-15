@@ -16,6 +16,8 @@ export default class Game extends Phaser.Scene {
     create() { 
        this.physics.world.setBounds(0, 0, 4000, 2500)
 
+       this.gameOver = false
+
        //this.cameras.main.setZoom(0.5)
 
         //this.add.image(0, 0, 'bg')
@@ -83,7 +85,7 @@ export default class Game extends Phaser.Scene {
                 food.disableBody(true, true);
                 score += 10; 
                 this.scoreLabel.setText('Score: ' + score);
-                console.log(score)
+                //console.log(score)
             }, 
             null, 
             this);
@@ -97,6 +99,7 @@ export default class Game extends Phaser.Scene {
         );
 
         function gameOver(){
+            this.gameOver = true
             this.gameOverLabel = this.add.text(400, 250, 'GAME OVER!', {
                 fontSize: 100,
                 color: 'white'
@@ -104,13 +107,17 @@ export default class Game extends Phaser.Scene {
     
             this.gameOverLabel.setScrollFactor(0, 0)
             this.gameOverLabel.setOrigin(0.5, 0.5)
-            //prevent user from eating more food, and offer them the option to play again
-            //also save the user's score
-            //this.physics.remove.existing(this.ball)
+
+            this.userFish.destroy()
+            console.log(score)
+            //save the user's score - how to do this?
+
+            //fetch in the score post api route
+            //add the score value, and the user's name somehow?
+            //prompt for name if high score, or something
         }
 
     }
-
 
     update() {
         /** @type {Phaser.Physics.Arcade.StaticBody} */
@@ -118,26 +125,28 @@ export default class Game extends Phaser.Scene {
 
         var speed = 5
         //the ball can move in all eight directions
-        if (this.cursors.up.isDown && this.cursors.left.isDown){
-            this.userFish.y -= speed
-            this.userFish.x -= speed
-        } else if (this.cursors.up.isDown && this.cursors.right.isDown){
-            this.userFish.y -= speed
-            this.userFish.x += speed
-        }else if (this.cursors.down.isDown && this.cursors.left.isDown){
-            this.userFish.y += speed
-            this.userFish.x -= speed
-        }else if (this.cursors.down.isDown && this.cursors.right.isDown){
-            this.userFish.y += speed
-            this.userFish.x += speed
-        } else if (this.cursors.up.isDown) {
-            this.userFish.y -= speed
-        } else if (this.cursors.down.isDown) {
-            this.userFish.y += speed
-        } else if (this.cursors.right.isDown){
-            this.userFish.x += speed
-        } else if (this.cursors.left.isDown){
-            this.userFish.x -= speed
+        if (!this.gameOver){
+            if (this.cursors.up.isDown && this.cursors.left.isDown){
+                this.userFish.y -= speed
+                this.userFish.x -= speed
+            } else if (this.cursors.up.isDown && this.cursors.right.isDown){
+                this.userFish.y -= speed
+                this.userFish.x += speed
+            }else if (this.cursors.down.isDown && this.cursors.left.isDown){
+                this.userFish.y += speed
+                this.userFish.x -= speed
+            }else if (this.cursors.down.isDown && this.cursors.right.isDown){
+                this.userFish.y += speed
+                this.userFish.x += speed
+            } else if (this.cursors.up.isDown) {
+                this.userFish.y -= speed
+            } else if (this.cursors.down.isDown) {
+                this.userFish.y += speed
+            } else if (this.cursors.right.isDown){
+                this.userFish.x += speed
+            } else if (this.cursors.left.isDown){
+                this.userFish.x -= speed
+            }
         }
 
         //const diff = this.ball.y - this.paddleRight.y
