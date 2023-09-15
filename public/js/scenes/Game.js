@@ -5,7 +5,6 @@ const cellH = 100
 
 export default class Game extends Phaser.Scene {
 
-    //not sure what this does, but seems good to have
     preload()
     {
         this.load.image('userFish', 'assets/user-fish.png')
@@ -30,9 +29,13 @@ export default class Game extends Phaser.Scene {
 
         //USER FISH
         this.userFish = this.add.sprite(2000, 100, 'userFish')
+
+
         this.userFish.setScale(0.03)
         this.physics.add.existing(this.userFish) 
         this.userFish.body.setCollideWorldBounds(true, 1, 1)
+   
+
 
         //FISH FOOD
         this.foodPieces = this.physics.add.group({
@@ -42,13 +45,6 @@ export default class Game extends Phaser.Scene {
         }); 
 
         Phaser.Actions.RandomRectangle(this.foodPieces.getChildren(), new Phaser.Geom.Rectangle(50, 50, 3900, 2400))
-
-        //this.foodPieces.refresh();
-        // for (var i = 0; i < 200; i++) {
-        //     let x = Phaser.Math.RND.between(0, 4000);
-        //     let y = Phaser.Math.RND.between(0, 2500);
-        //     this.foodPieces.create(x, y); 
-        // }
 
         //BAD FISHIES
         this.enemies = this.physics.add.group({
@@ -83,7 +79,6 @@ export default class Game extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys()
 
         //INTERACTIONS 
-        //this.physics.add.collider(this.userFish, this.foodPieces)
         this.physics.add.overlap (
             this.userFish, 
             this.foodPieces, 
@@ -133,12 +128,8 @@ export default class Game extends Phaser.Scene {
             this.userFish.x += speed
         } else if (this.cursors.left.isDown){
             this.userFish.x -= speed
+            //this.userFish.setScale(-0.03, 0.03)
         }
-
-        //const diff = this.ball.y - this.paddleRight.y
-        // if (Math.abs(diff) < 10) {
-        //     return
-        // }
         
         if (this.userFish.x <= 25) {
             //console.log(this.ball.x)
