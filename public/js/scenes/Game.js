@@ -35,13 +35,15 @@ export default class Game extends Phaser.Scene {
         this.userFish.body.setCollideWorldBounds(true, 1, 1)
 
         //FISH FOOD
-        this.foodPieces = this.physics.add.staticGroup({
+        this.foodPieces = this.physics.add.group({
             key: 'fishFood',
             frameQuantity: 200,
             setScale: {x: 0.02, y: 0.02}
         }); 
 
         Phaser.Actions.RandomRectangle(this.foodPieces.getChildren(), new Phaser.Geom.Rectangle(50, 50, 3900, 2400))
+
+        //this.foodPieces.refresh();
         // for (var i = 0; i < 200; i++) {
         //     let x = Phaser.Math.RND.between(0, 4000);
         //     let y = Phaser.Math.RND.between(0, 2500);
@@ -81,7 +83,7 @@ export default class Game extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys()
 
         //INTERACTIONS 
-        this.physics.add.collider(this.userFish, this.foodPieces)
+        //this.physics.add.collider(this.userFish, this.foodPieces)
         this.physics.add.overlap (
             this.userFish, 
             this.foodPieces, 
