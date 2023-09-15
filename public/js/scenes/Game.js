@@ -8,6 +8,7 @@ export default class Game extends Phaser.Scene {
     //not sure what this does, but seems good to have
     preload()
     {
+        this.load.image('userFish', 'assets/user-fish.png')
         this.load.image('enemies', 'assets/bad-fish.png')
     }
 
@@ -15,15 +16,22 @@ export default class Game extends Phaser.Scene {
     create() { 
        this.physics.world.setBounds(0, 0, 4000, 2500)
 
-       //this.cameras.main.setZoom(0.2)
+       //this.cameras.main.setZoom(0.5)
 
-        //will be a fish soon
-        this.ball = this.add.circle(2000, 1250, 30, 0x0f4d12, 1)
-        this.physics.add.existing(this.ball)
-        //this.ball.body.setBounce(1, 1)
-        
-        //can't leave world, stays 
-        this.ball.body.setCollideWorldBounds(true, 1, 1)
+        //this.add.image(0, 0, 'bg')
+        // const {width, height} = camera
+
+        // const grid = this.add
+        // .grid(0, 0, width + cellW, height + cellH, cellW, cellH)
+        // .setAlpha(0.2)
+        // .setOrigin(0, 0)
+        // .setScrollFactor(0, 0)
+
+        //user fish starts here 
+        this.userFish = this.add.sprite(2000, 100, 'userFish')
+        this.userFish.setScale(0.03)
+        this.physics.add.existing(this.userFish) 
+        this.userFish.body.setCollideWorldBounds(true, 1, 1)
 
         //fish food starts here
         this.foodPieces = this.physics.add.staticGroup(); 
@@ -62,15 +70,16 @@ export default class Game extends Phaser.Scene {
         this.scoreLabel.setScrollFactor(0, 0)
         this.scoreLabel.setOrigin(0.5, 0.5)
 
-        this.cameras.main.startFollow(this.ball)
+        this.cameras.main.startFollow(this.userFish)
         
         this.cursors = this.input.keyboard.createCursorKeys()
 
-
+        //colliders and interactions 
+        this.physics.add.collider(this.userFish, this.foodPieces)
         this.physics.add.overlap (
-            this.ball, 
+            this.userFish, 
             this.foodPieces, 
-            function eatFood(ball, food) {
+            function eatFood(user, food) {
                 food.disableBody(true, true);
                 score += 10; 
                 this.scoreLabel.setText('Score: ' + score);
@@ -79,10 +88,8 @@ export default class Game extends Phaser.Scene {
             null, 
             this);
 
-        this.physics.add.collider(this.ball, this.foodPieces)
-
         this.physics.add.collider(
-            this.ball, 
+            this.userFish, 
             this.enemies,
             gameOver,
             null,
@@ -112,25 +119,25 @@ export default class Game extends Phaser.Scene {
         var speed = 5
         //the ball can move in all eight directions
         if (this.cursors.up.isDown && this.cursors.left.isDown){
-            this.ball.y -= speed
-            this.ball.x -= speed
+            this.userFish.y -= speed
+            this.userFish.x -= speed
         } else if (this.cursors.up.isDown && this.cursors.right.isDown){
-            this.ball.y -= speed
-            this.ball.x += speed
+            this.userFish.y -= speed
+            this.userFish.x += speed
         }else if (this.cursors.down.isDown && this.cursors.left.isDown){
-            this.ball.y += speed
-            this.ball.x -= speed
+            this.userFish.y += speed
+            this.userFish.x -= speed
         }else if (this.cursors.down.isDown && this.cursors.right.isDown){
-            this.ball.y += speed
-            this.ball.x += speed
+            this.userFish.y += speed
+            this.userFish.x += speed
         } else if (this.cursors.up.isDown) {
-            this.ball.y -= speed
+            this.userFish.y -= speed
         } else if (this.cursors.down.isDown) {
-            this.ball.y += speed
+            this.userFish.y += speed
         } else if (this.cursors.right.isDown){
-            this.ball.x += speed
+            this.userFish.x += speed
         } else if (this.cursors.left.isDown){
-            this.ball.x -= speed
+            this.userFish.x -= speed
         }
 
         //const diff = this.ball.y - this.paddleRight.y
@@ -138,12 +145,12 @@ export default class Game extends Phaser.Scene {
         //     return
         // }
         
-        if (this.ball.x <= 25) {
+        if (this.userFish.x <= 25) {
             //console.log(this.ball.x)
             //this.scoreLabel.x += 1
             // scored on left side
             //this.IncrementRightScore()
-        } else if (this.ball.x > 830) {
+        } else if (this.userFish.x > 830) {
             // scored on right side
             //this.IncrementLeftScore()
         }
