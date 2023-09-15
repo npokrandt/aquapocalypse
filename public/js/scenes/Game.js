@@ -131,9 +131,14 @@ export default class Game extends Phaser.Scene {
                 }
             })
             .catch (err => console.log(err))
-            //fetch in the score post api route
-            //add the score value, and the user's name somehow?
-            //prompt for name if high score, or something
+            
+            this.gameOverLabel2 = this.add.text(400, 450, 'Score saved!', {
+                fontSize: 32,
+                color: 'white'
+            })
+    
+            this.gameOverLabel2.setScrollFactor(0, 0)
+            this.gameOverLabel2.setOrigin(0.5, 0.5)
         }
 
     }
