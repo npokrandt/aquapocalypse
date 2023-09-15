@@ -34,6 +34,33 @@ export default class Game extends Phaser.Scene {
         //can't leave world, stays 
         this.ball.body.setCollideWorldBounds(true, 1, 1)
 
+        //fish food starts here
+        this.foodPieces = this.physics.add.staticGroup(); 
+
+        for (var i = 0; i < 200; i++) {
+            var x = Phaser.Math.RND.between(0, 4000);
+            var y = Phaser.Math.RND.between(0, 2500);
+            this.foodPieces.create(x, y); 
+        }
+
+        //enemy fishies start here 
+        this.enemies = this.physics.add.group({
+            key: 'enemies',
+            frameQuantity: 10,
+            bounceX: 1,
+            bounceY: 1,
+            collideWorldBounds: true,
+            velocityX: 1,
+            velocityY: -1,
+            setScale: {x: 0.25, y: 0.25}
+        });
+
+        for (const enemy of this.enemies.getChildren()) {
+            let x = Phaser.Math.RND.between(50, 300);
+            let y = Phaser.Math.RND.between(50, 300);
+            enemy.setVelocity(x, y)
+        }
+
         //score
         let score = 0;
         this.scoreLabel = this.add.text(400, 50, 'Score: 0', {
@@ -49,68 +76,24 @@ export default class Game extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys()
 
 
-        //fish food starts here
-        // this.foodPieces = this.physics.add.group(); //Why won't the group accept the white circles??
+        this.physics.add.overlap (
+            this.ball, 
+            this.foodPieces, 
+            function eatFood(ball, food) {
+                food.disableBody(true, true);
+                score += 10; 
+                this.scoreLabel.setText('Score: ' + score);
+                console.log(score)
+            }, 
+            null, 
+            this);
 
-        // for (var i = 0; i < 200; i++) {
-        //     var x = Phaser.Math.RND.between(0, 4000);
-        //     var y = Phaser.Math.RND.between(0, 2500);
-        //     this.foodPieces.create(x, y); //Why won't these circles be part of the group?? this.add.circle(x, y, 5, 0xffffff, 1)
-        // }
+        this.physics.add.collider(this.ball, this.foodPieces)
 
-        // this.physics.add.collider(this.ball, this.foodPieces)
-        // this.physics.add.overlap (
-        //     this.ball, 
-        //     this.foodPieces, 
-        //     function eatFood(ball, food) {
-        //         food.disableBody(true, true);
-        //         score += 10; 
-        //         this.scoreLabel.setText('Score: ' + score);
-        //         // if (this.foodPieces.countActive(true) < 190) {
-        //         //     this.foodPieces.children.iterate(child => {
-        //         //         child.enableBody(true, child.x, 0, true, true)
-        //         //     })
-        //         // }
-        //         console.log(score)
-        //     }, 
-        //     null, 
-        //     this);
-        
-         
-
-        //enemy fishies start here 
-        this.enemies = this.physics.add.group({
-            key: 'enemies',
-            frameQuantity: 10,
-            bounceX: 1,
-            bounceY: 1,
-            collideWorldBounds: true,
-            velocityX: 20,
-            velocityY: -10,
-            setScale: {x: 0.25, y: 0.25}
-        });
-
-        for (const enemy of this.enemies.getChildren()) {
-            var x = Phaser.Math.RND.between(50, 80);
-            var y = Phaser.Math.RND.between(50, 80);
-            enemy.setVelocity(x, y)
-        }
-        //this.enemies.body.setCollideWorldBounds(true, 1, 1)
-
-        // for (var i = 0; i < 100; i++) {
-        //     var x = Phaser.Math.RND.between(0, 4000);
-        //     var y = Phaser.Math.RND.between(0, 2500);
-        //     const enemy = this.physics.add.sprite(x, y, 'enemies');
-        //     enemy.setScale(0.25, 0.25);
-        //     enemy.setVelocity(-10, 10)
-        //     this.enemies.add(enemy, true)
-        // }
-
-        //this.physics.add.collider(this.foodPieces, this.enemies);
         this.physics.add.collider(
             this.ball, 
             this.enemies,
-            function gameOver(){
+            function gameOver(ball){
                 console.log('game over')
             },
             null,
