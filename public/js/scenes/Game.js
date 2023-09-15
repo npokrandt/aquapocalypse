@@ -10,6 +10,7 @@ export default class Game extends Phaser.Scene {
     {
         this.load.image('userFish', 'assets/user-fish.png')
         this.load.image('enemies', 'assets/bad-fish.png')
+        this.load.image('fishFood', 'assets/fish-food.png')
     }
 
     //create the game
@@ -27,22 +28,27 @@ export default class Game extends Phaser.Scene {
         // .setOrigin(0, 0)
         // .setScrollFactor(0, 0)
 
-        //user fish starts here 
+        //USER FISH
         this.userFish = this.add.sprite(2000, 100, 'userFish')
         this.userFish.setScale(0.03)
         this.physics.add.existing(this.userFish) 
         this.userFish.body.setCollideWorldBounds(true, 1, 1)
 
-        //fish food starts here
-        this.foodPieces = this.physics.add.staticGroup(); 
+        //FISH FOOD
+        this.foodPieces = this.physics.add.staticGroup({
+            key: 'fishFood',
+            frameQuantity: 200,
+            setScale: {x: 0.02, y: 0.02}
+        }); 
 
-        for (var i = 0; i < 200; i++) {
-            var x = Phaser.Math.RND.between(0, 4000);
-            var y = Phaser.Math.RND.between(0, 2500);
-            this.foodPieces.create(x, y); 
-        }
+        Phaser.Actions.RandomRectangle(this.foodPieces.getChildren(), new Phaser.Geom.Rectangle(50, 50, 3900, 2400))
+        // for (var i = 0; i < 200; i++) {
+        //     let x = Phaser.Math.RND.between(0, 4000);
+        //     let y = Phaser.Math.RND.between(0, 2500);
+        //     this.foodPieces.create(x, y); 
+        // }
 
-        //enemy fishies start here 
+        //BAD FISHIES
         this.enemies = this.physics.add.group({
             key: 'enemies',
             frameQuantity: 10,
@@ -60,7 +66,7 @@ export default class Game extends Phaser.Scene {
             enemy.setVelocity(x, y)
         }
 
-        //score
+        //SCORE
         let score = 0;
         this.scoreLabel = this.add.text(400, 50, 'Score: 0', {
             fontSize: 48,
@@ -74,7 +80,7 @@ export default class Game extends Phaser.Scene {
         
         this.cursors = this.input.keyboard.createCursorKeys()
 
-        //colliders and interactions 
+        //INTERACTIONS 
         this.physics.add.collider(this.userFish, this.foodPieces)
         this.physics.add.overlap (
             this.userFish, 
