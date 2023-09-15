@@ -4,7 +4,7 @@
         {{#each scores as |score| }}
         <li class="high-score-list">
             <div class="col-4 rank-column">
-                <p class="high-score-text">{{@index}}.</p>
+                <p class="high-score-text">{{score.rank}}.</p>
             </div>
             <div class="col-2 name-column">
                 <p class="high-score-text">{{score.user.name}}</p>

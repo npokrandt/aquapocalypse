@@ -31,7 +31,16 @@ router.get('/high-scores', async (req, res) => {
     include: User,
     order: [['score', 'DESC']]
   })
+  //console.log(scoreData)
   const scores = scoreData.map(score => score.get({ plain: true }))
+
+  for (score in scores){
+    
+    const rank = parseInt(score) + 1
+    console.log(rank)
+
+    scores[score].rank = rank
+  }
   console.log(scores)
   res.render('high-scores', { 
     scores,

@@ -19,7 +19,6 @@ router.post('/add-score', async (req, res) => {
         const user_id = req.session.user_id
 
         const fullObject = {...req.body, user_id}
-        console.log(fullObject)
         const newScore = await Score.create(fullObject)
         res.status(201).json(newScore)
     } catch(err) {

@@ -30,3 +30,11 @@ Score.init(
 )
 
 module.exports = Score
+
+//1. limit number of high scores that con be saved
+//presumably can grab the lowest current score
+//if user beats it, it gets replaced
+//2. Handlebars limit to 10 best scores (and personal best score)
+//3. Fix the number issue
+//4. Set amounts of scores that can be viewed
+//5. (Future option) Maybe set all personal scores somewhere as well 

@@ -14,7 +14,6 @@ const seedDatabase = async () => {
     // raw: true,
   });
   users = users.map(user => user.dataValues)
-  console.log(users)
   for (const score of scoresData) {
     const randomIndex = Math.floor(Math.random()*users.length)
     const randomUserID = users[randomIndex].id

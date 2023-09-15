@@ -108,7 +108,7 @@ export default class Game extends Phaser.Scene {
             this.gameOverLabel.setOrigin(0.5, 0.5)
 
             this.userFish.destroy()
-            console.log(score)
+            //console.log(score)
             //save the user's score - how to do this?
 
             const scoreObject = {
