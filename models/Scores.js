@@ -30,3 +30,5 @@ Score.init(
 )
 
 module.exports = Score
+
+//4. Set amounts of scores that can be viewed

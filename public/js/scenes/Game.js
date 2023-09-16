@@ -18,6 +18,17 @@ export default class Game extends Phaser.Scene {
 
        this.gameOver = false
 
+       const gameOverLabel2 = this.add.text(400, 450, 'Score saved!', {
+          fontSize: 32,
+          color: 'white'
+       })
+
+       gameOverLabel2.setScrollFactor(0, 0)
+       gameOverLabel2.setOrigin(0.5, 0.5)
+       gameOverLabel2.visible = false
+
+       let isDatabaseFull = false
+
        //this.cameras.main.setZoom(0.5)
 
         //this.add.image(0, 0, 'bg')
@@ -108,36 +119,100 @@ export default class Game extends Phaser.Scene {
             this.gameOverLabel.setOrigin(0.5, 0.5)
 
             this.userFish.destroy()
-            console.log(score)
-            //save the user's score - how to do this?
 
-            const scoreObject = {
-                score
-            }
+            //was here
+            
+            checkDatabase()
+        }
 
-            fetch('/api/scores/add-score', {
-                method: 'POST',
-                headers: {
-                    'Content-Type':'application/json'
-                },
-                body: JSON.stringify(scoreObject)
-            }).then(response => {
-                if(response.status === 201){
-                    console.log('score added')
-                    //window.location.assign('/')
+        function checkDatabase(){
+
+            fetch('/api/scores/score-count').
+            then(response => {
+                if(response.status === 200){
+                    
+                    return response.json()
                 } else {
                     alert(response.status)
                 }
             })
+            .then(result => {
+                const scoreCount = result[0].score_count
+
+                //the database is full
+                if (scoreCount >= 100){
+                    isDatabaseFull = true
+                    checkScore()
+                } else {
+                    updateScore()
+                }
+            })
             .catch (err => console.log(err))
             
-            this.gameOverLabel2 = this.add.text(400, 450, 'Score saved!', {
-                fontSize: 32,
-                color: 'white'
+        }
+
+        function checkScore(){
+            fetch('/api/scores/lowest-score').
+            then(response => {
+                if(response.status === 200){
+                    
+                    return response.json()
+                } else {
+                    alert(response.status)
+                }
             })
-    
-            this.gameOverLabel2.setScrollFactor(0, 0)
-            this.gameOverLabel2.setOrigin(0.5, 0.5)
+            .then(result => {
+                const lowestScore = result.score
+                console.log(result)
+                if (score > lowestScore){
+                    updateScore(result.id)
+                }
+                
+            })
+            .catch (err => console.log(err))
+            //compare it to the current score
+            //if higher, update the old score to the new one
+            //else, discard the new score, and don't print the 'saving score' message
+        }
+
+        function updateScore(id){
+            const scoreObject = {
+                score
+            }
+
+            if (isDatabaseFull){
+                fetch(`/api/scores/update-score/${id}` , {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type':'application/json'
+                    },
+                    body: JSON.stringify(scoreObject)
+                }).then(response => {
+                    if(response.status === 200){
+                        console.log('score updated')
+                    } else {
+                        alert(response.status)
+                    }
+                })
+                .catch (err => console.log(err))
+
+            } else {
+                fetch('/api/scores/add-score', {
+                   method: 'POST',
+                   headers: {
+                       'Content-Type':'application/json'
+                   },
+                   body: JSON.stringify(scoreObject)
+               }).then(response => {
+                   if(response.status === 201){
+                       console.log('score added')
+                       //window.location.assign('/')
+                   } else {
+                       alert(response.status)
+                   }
+               })
+               .catch (err => console.log(err))
+            }
         }
     }
 
