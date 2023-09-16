@@ -7,8 +7,7 @@ export default class Game extends Phaser.Scene {
 
     preload()
     {
-        this.load.image('userFish', 'assets/user-fish.png')
-        this.load.image('enemies', 'assets/bad-fish.png')
+        this.load.spritesheet('userFish', 'assets/user-fishies/user-fish.png', 'assets/spritesheet-user.json')
         this.load.image('fishFood', 'assets/fish-food.png')
     }
 
@@ -30,10 +29,12 @@ export default class Game extends Phaser.Scene {
         // .setScrollFactor(0, 0)
 
         //USER FISH
-        this.userFish = this.add.sprite(2000, 100, 'userFish')
+        this.userFish = this.add.sprite(2000, 100, 'userFish', 0).setInteractive(); 
         this.userFish.setScale(0.03)
         this.physics.add.existing(this.userFish) 
         this.userFish.body.setCollideWorldBounds(true, 1, 1)
+
+        this.userFish.on(cursor.isDown)
    
         //FISH FOOD
         this.foodPieces = this.physics.add.group({
@@ -53,12 +54,12 @@ export default class Game extends Phaser.Scene {
             collideWorldBounds: true,
             velocityX: 1,
             velocityY: -1,
-            setScale: {x: 0.25, y: 0.25}
+            setScale: {x: 0.03, y: 0.03}
         });
 
         for (const enemy of this.enemies.getChildren()) {
-            let x = Phaser.Math.RND.between(50, 300);
-            let y = Phaser.Math.RND.between(50, 300);
+            let x = Phaser.Math.RND.between(50, 250);
+            let y = Phaser.Math.RND.between(50, 250);
             enemy.setVelocity(x, y)
         }
 
