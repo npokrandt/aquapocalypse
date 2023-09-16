@@ -44,4 +44,26 @@ router.post('/logout', (req, res) => {
   }
 });
 
+router.post('/create-account', async (req, res) => {
+  console.log("Inside POST /api/create-account")
+  const { email, username, password } = req.body
+  
+  if (!email || !username || !password) {
+    return res.status(400).json('you need an email, username, and password to create an account')
+  }
+
+  try {
+    const userData = await User.create({
+      email,
+      username,
+      password,
+    })
+    console.log('User created:', userData)
+    res.redirect('/login')
+  } catch (err) {
+    console.error("Error while creating account:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+})
+
 module.exports = router;
