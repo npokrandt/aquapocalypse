@@ -2,7 +2,19 @@
 /* global selectors */
 /* ---------------- */
 
+body {
+    background-color: #6D6D64;
+}
 
+label, input {
+    display: block;
+}
+
+.btn {
+    margin: 1rem;
+    color: #f0f0ef;
+    background-color: ;
+}
 
 
 
