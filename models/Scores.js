@@ -31,7 +31,4 @@ Score.init(
 
 module.exports = Score
 
-//1. limit number of high scores that con be saved (100)
-//presumably can grab the lowest current score
-//if user beats it, it gets replaced
 //4. Set amounts of scores that can be viewed
