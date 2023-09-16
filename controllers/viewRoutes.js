@@ -40,7 +40,14 @@ router.get('/high-scores', async (req, res) => {
     console.log(rank)
 
     scores[score].rank = rank
+
+    if (rank < 11){
+      scores[score].top_score = true
+    } else {
+      scores[score].top_score = false
+    }
   }
+
   console.log(scores)
   res.render('high-scores', { 
     scores,
