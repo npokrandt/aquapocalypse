@@ -7,15 +7,16 @@ export default class Game extends Phaser.Scene {
 
     preload()
     {
-        this.load.image('userFish', 'assets/user-fish.png')
-        this.load.image('enemies', 'assets/bad-fish.png')
-        this.load.image('fishFood', 'assets/fish-food.png')
+        //this.load.image('userFish', 'assets/user-fish.png')
         this.load.image('bg', 'assets/bg.png')
         this.load.image('bg-particle-1', 'assets/bg-particle-1.png')
         this.load.image('bg-border', 'assets/bg-border.png')
         this.load.image('bg-pillar-1', 'assets/bg-pillar-1.png')
         this.load.image('bg-pillar-2', 'assets/bg-pillar-2.png')
         this.load.image('fg-shadow', 'assets/fg-shadow.png')
+        this.load.atlas('userFish', 'assets/user-fishies/user-spritesheet.png', 'assets/user-fishies/user-spritesheet.json')
+        this.load.atlas('badFish', 'assets/bad-fishies/bad-spritesheet.png', 'assets/bad-fishies/bad-spritesheet.json')
+        this.load.image('fishFood', 'assets/fish-food.png')
     }
 
     //create the game
@@ -67,22 +68,17 @@ export default class Game extends Phaser.Scene {
 
         let isDatabaseFull = false
 
-        //this.cameras.main.setZoom(0.5)
-
-        //this.add.image(0, 0, 'bg')
-        // const {width, height} = camera
-
-        // const grid = this.add
-        // .grid(0, 0, width + cellW, height + cellH, cellW, cellH)
-        // .setAlpha(0.2)
-        // .setOrigin(0, 0)
-        // .setScrollFactor(0, 0)
-
         //USER FISH
-        this.userFish = this.add.sprite(2000, 100, 'userFish')
-        this.userFish.setScale(0.03)
-        this.physics.add.existing(this.userFish) 
+        this.anims.create({
+            key: 'swim',
+            frames: 'userFish',
+            frameRate: 10,
+            repeat: -1
+        })
+        this.userFish = this.physics.add.sprite(2000, 1000).play('swim')
         this.userFish.body.setCollideWorldBounds(true, 1, 1)
+        this.userFish.setScale(0.2)
+        this.physics.add.existing(this.userFish) 
         this.userFish.body.setCircle(850, 1600, 900)
    
         //FISH FOOD
@@ -99,6 +95,13 @@ export default class Game extends Phaser.Scene {
         }
 
         //BAD FISHIES
+        this.anims.create({
+            key: 'badSwim',
+            frames: 'badFish',
+            frameRate: 10,
+            repeat: -1
+        })
+
         this.enemies = this.physics.add.group({
             key: 'enemies',
             frameQuantity: 10,
@@ -107,14 +110,15 @@ export default class Game extends Phaser.Scene {
             collideWorldBounds: true,
             velocityX: 1,
             velocityY: -1,
-            setScale: {x: 0.03, y: 0.03}
+            setScale: {x: 0.1, y: 0.1}
         });
         
         for (const enemy of this.enemies.getChildren()) {
-            let x = Phaser.Math.RND.between(50, 300);
-            let y = Phaser.Math.RND.between(50, 300);
+            let x = Phaser.Math.RND.between(50, 200);
+            let y = Phaser.Math.RND.between(50, 200);
             enemy.setVelocity(x, y)
             enemy.body.setCircle(850, 1600, 900)
+            enemy.play('badSwim')
         }
 
         this.fgShadow = this.add.tileSprite(0, 0, 3600, 3400, 'fg-shadow')
@@ -256,7 +260,6 @@ export default class Game extends Phaser.Scene {
                }).then(response => {
                    if(response.status === 201){
                        console.log('score added')
-                       //window.location.assign('/')
                    } else {
                        alert(response.status)
                    }
@@ -273,7 +276,7 @@ export default class Game extends Phaser.Scene {
         this.bgPillar1.setTilePosition(this.cameras.main.scrollX * 0.7, this.cameras.main.scrollY * 0.25) 
         this.bgPillar2.setTilePosition(this.cameras.main.scrollX * 0.75, this.cameras.main.scrollY * 0.15) 
         this.fgShadow.setTilePosition(this.cameras.main.scrollX * 0.8, this.cameras.main.scrollY * 0.1) 
-        
+
         //the ball can move in all eight directions
         if (!this.gameOver){
             const speed = 10
@@ -314,15 +317,5 @@ export default class Game extends Phaser.Scene {
                 this.userFish.body.setCircle(850, offsetXLeft, offsetY)
             }
         }
-        
-    //     if (this.userFish.x <= 25) {
-    //         //console.log(this.ball.x)
-    //         //this.scoreLabel.x += 1
-    //         // scored on left side
-    //         //this.IncrementRightScore()
-    //     } else if (this.userFish.x > 830) {
-    //         // scored on right side
-    //         //this.IncrementLeftScore()
-    //     }
     }
 }

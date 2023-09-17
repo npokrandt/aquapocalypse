@@ -1,0 +1,44 @@
+{"frames": [
+
+{
+	"filename": "bad-fish-1.png",
+	"frame": {"x":1,"y":1,"w":868,"h":683},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":0,"w":868,"h":683},
+	"sourceSize": {"w":872,"h":687}
+},
+{
+	"filename": "bad-fish-2.png",
+	"frame": {"x":871,"y":1,"w":917,"h":681},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":917,"h":681},
+	"sourceSize": {"w":919,"h":687}
+},
+{
+	"filename": "bad-fish-3.png",
+	"frame": {"x":1,"y":1,"w":868,"h":683},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":2,"y":0,"w":868,"h":683},
+	"sourceSize": {"w":872,"h":687}
+},
+{
+	"filename": "bad-fish-4.png",
+	"frame": {"x":871,"y":1,"w":917,"h":681},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":0,"y":1,"w":917,"h":681},
+	"sourceSize": {"w":919,"h":687}
+}],
+"meta": {
+	"app": "https://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "bad-spritesheet.png",
+	"format": "RGBA8888",
+	"size": {"w":1789,"h":685},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:6d5aa7d1ae0b9398c0191419847945ef:11aa79100a57af2f75cd7fe1d20b8e2c:b6cf513d10aaa9c88f14e9a674b9f4b9$"
+}
+}
