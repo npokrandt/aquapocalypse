@@ -10,32 +10,58 @@ export default class Game extends Phaser.Scene {
         this.load.image('userFish', 'assets/user-fish.png')
         this.load.image('enemies', 'assets/bad-fish.png')
         this.load.image('fishFood', 'assets/fish-food.png')
-        this.load.image('background-1', 'assets/background-1.png')
+        this.load.image('bg', 'assets/bg.png')
+        this.load.image('bg-particle-1', 'assets/bg-particle-1.png')
         this.load.image('bg-border', 'assets/bg-border.png')
+        this.load.image('bg-pillar-1', 'assets/bg-pillar-1.png')
+        this.load.image('bg-pillar-2', 'assets/bg-pillar-2.png')
+        this.load.image('fg-shadow', 'assets/fg-shadow.png')
     }
 
     //create the game
     create() { 
         this.physics.world.setBounds(0, 0, 4000, 3000)
-
-        this.background1 = this.add.tileSprite(-200, -200, 8000, 6000, 'background-1')
+        
+        this.bg = this.add.tileSprite(-200, -200, 7000, 3400, 'bg')
             .setOrigin(0)
-            .setScrollFactor(0.25)
+            .setScrollFactor(0.5)
+        // this.background1 = this.add.tileSprite(-200, -200, 8000, 6000, 'background-1')
+        //     .setOrigin(0)
+        //     .setScrollFactor(0.5)
+
+        this.bgPillar2 = this.add.tileSprite(0, 0, 3000, 3000, 'bg-pillar-2')
+            .setOrigin(0, 0)
+            .setPosition(-600, -100)
+            .setDisplaySize(3000, 1500)
+            .setScrollFactor(.15)
+            
+        this.bgParticle1 = this.add.tileSprite(0,0, 4000, 3000, 'bg-particle-1')
+            .setOrigin(0, 0)
+            .setPosition(0, -200)
+            .setTileScale(0.5, 0.5)
+            .setScrollFactor(.5)
+
+        this.bgPillar1 = this.add.tileSprite(300, 0, 4000, 3000, 'bg-pillar-1')
+            .setOrigin(0, 0)
+            .setPosition(-600, -500)
+            .setDisplaySize(5200, 4200)
+            .setScrollFactor(.25)
        
         this.bgBorder = this.add.image(2000, 1500, 'bg-border')
             .setOrigin(0, 0)
             .setPosition(-600, -500)
             .setDisplaySize(5200, 4200)
             .setScrollFactor(1)
-       
-        this.gameOver = false
 
-        const gameOverLabel2 = this.add.text(400, 450, 'Score saved!', {
+            
+            this.gameOver = false
+            
+            const gameOverLabel2 = this.add.text(400, 450, 'Score saved!', {
           fontSize: 32,
           color: 'white'
         })
 
-       gameOverLabel2.setScrollFactor(0, 0)
+        gameOverLabel2.setScrollFactor(0, 0)
        gameOverLabel2.setOrigin(0.5, 0.5)
        gameOverLabel2.visible = false
 
@@ -78,20 +104,26 @@ export default class Game extends Phaser.Scene {
             velocityY: -1,
             setScale: {x: 0.25, y: 0.25}
         });
-
+        
         for (const enemy of this.enemies.getChildren()) {
             let x = Phaser.Math.RND.between(50, 300);
             let y = Phaser.Math.RND.between(50, 300);
             enemy.setVelocity(x, y)
         }
 
+        this.fgShadow = this.add.tileSprite(0, 0, 3600, 3400, 'fg-shadow')
+            .setOrigin(0, 0)
+            .setPosition(-1200, -600)
+            .setDisplaySize(5200, 4200)
+            .setScrollFactor(.9)
+
         //SCORE
         let score = 0;
-        this.scoreLabel = this.add.text(400, 50, 'Score: 0', {
-            fontSize: 48,
+        this.scoreLabel = this.add.text(400, 32, 'Score: 0', {
+            fontSize: 32,
             color: 'white'
         })
-
+        
         this.scoreLabel.setScrollFactor(0, 0)
         this.scoreLabel.setOrigin(0.5, 0.5)
 
@@ -230,8 +262,12 @@ export default class Game extends Phaser.Scene {
 
     update() {
         /** @type {Phaser.Physics.Arcade.StaticBody} */
-        this.background1.setTilePosition(this.cameras.main.scrollX, this.cameras.main.scrollY)
-         var speed = 15
+        this.bg.setTilePosition(this.cameras.main.scrollX)
+        this.bgParticle1.setTilePosition(this.cameras.main.scrollX * 0.5, this.cameras.main.scrollY * 0.5)
+        this.bgPillar1.setTilePosition(this.cameras.main.scrollX * 0.7, this.cameras.main.scrollY * 0.25) 
+        this.bgPillar2.setTilePosition(this.cameras.main.scrollX * 0.75, this.cameras.main.scrollY * 0.15) 
+        this.fgShadow.setTilePosition(this.cameras.main.scrollX * 0.8, this.cameras.main.scrollY * 0.1) 
+         var speed = 10
 
         //the ball can move in all eight directions
         if (!this.gameOver){
