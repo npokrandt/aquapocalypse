@@ -7,7 +7,8 @@ export default class Game extends Phaser.Scene {
 
     preload()
     {
-        //this.load.spritesheet('userFish', 'assets/user-fishies/user-fish.png', 'assets/spritesheet-user.json')
+        this.load.image('userFish', 'assets/user-fish.png')
+        this.load.image('enemies', 'assets/bad-fish.png')
         this.load.image('fishFood', 'assets/fish-food.png')
         this.load.image('bg', 'assets/bg.png')
         this.load.image('bg-particle-1', 'assets/bg-particle-1.png')
@@ -66,19 +67,8 @@ export default class Game extends Phaser.Scene {
 
         let isDatabaseFull = false
 
-        //this.cameras.main.setZoom(0.5)
-
-        //this.add.image(0, 0, 'bg')
-        // const {width, height} = camera
-
-        // const grid = this.add
-        // .grid(0, 0, width + cellW, height + cellH, cellW, cellH)
-        // .setAlpha(0.2)
-        // .setOrigin(0, 0)
-        // .setScrollFactor(0, 0)
-
         //USER FISH
-        this.userFish = this.add.sprite(2000, 100, 'userFish', 0).setInteractive(); 
+        this.userFish = this.add.sprite(2000, 100, 'userFish')
         this.userFish.setScale(0.03)
         this.physics.add.existing(this.userFish) 
         this.userFish.body.setCollideWorldBounds(true, 1, 1)
@@ -110,8 +100,8 @@ export default class Game extends Phaser.Scene {
         });
         
         for (const enemy of this.enemies.getChildren()) {
-            let x = Phaser.Math.RND.between(50, 250);
-            let y = Phaser.Math.RND.between(50, 250);
+            let x = Phaser.Math.RND.between(50, 300);
+            let y = Phaser.Math.RND.between(50, 300);
             enemy.setVelocity(x, y)
             enemy.body.setCircle(850, 1600, 900)
         }
@@ -255,7 +245,6 @@ export default class Game extends Phaser.Scene {
                }).then(response => {
                    if(response.status === 201){
                        console.log('score added')
-                       //window.location.assign('/')
                    } else {
                        alert(response.status)
                    }
@@ -313,15 +302,5 @@ export default class Game extends Phaser.Scene {
                 this.userFish.body.setCircle(850, offsetXLeft, offsetY)
             }
         }
-        
-    //     if (this.userFish.x <= 25) {
-    //         //console.log(this.ball.x)
-    //         //this.scoreLabel.x += 1
-    //         // scored on left side
-    //         //this.IncrementRightScore()
-    //     } else if (this.userFish.x > 830) {
-    //         // scored on right side
-    //         //this.IncrementLeftScore()
-    //     }
     }
 }
