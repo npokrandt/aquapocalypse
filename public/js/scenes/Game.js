@@ -7,15 +7,16 @@ export default class Game extends Phaser.Scene {
 
     preload()
     {
-        this.load.image('userFish', 'assets/user-fish.png')
-        this.load.image('enemies', 'assets/bad-fish.png')
-        this.load.image('fishFood', 'assets/fish-food.png')
+        //this.load.image('userFish', 'assets/user-fish.png')
         this.load.image('bg', 'assets/bg.png')
         this.load.image('bg-particle-1', 'assets/bg-particle-1.png')
         this.load.image('bg-border', 'assets/bg-border.png')
         this.load.image('bg-pillar-1', 'assets/bg-pillar-1.png')
         this.load.image('bg-pillar-2', 'assets/bg-pillar-2.png')
         this.load.image('fg-shadow', 'assets/fg-shadow.png')
+        this.load.spritesheet('userFish', 'assets/user-fishies/user-spritesheet.png', {frameWidth: 1788, frameHeight: 684})
+        this.load.image('fishFood', 'assets/fish-food.png')
+        this.load.image('enemies', 'assets/bad-fish.png')
     }
 
     //create the game
@@ -68,10 +69,16 @@ export default class Game extends Phaser.Scene {
         let isDatabaseFull = false
 
         //USER FISH
-        this.userFish = this.add.sprite(2000, 100, 'userFish')
+        this.userFish = this.physics.add.sprite(2000, 1250, 'userFish')
+        this.userFish.body.setCollideWorldBounds(true, 1, 1)
+        this.anims.create({
+            key: 'swim',
+            frames: this.anims.generateFrameNumbers('userFish', {start: 0, end: 0}),
+            frameRate: 10,
+            repeat: -1
+        })
         this.userFish.setScale(0.03)
         this.physics.add.existing(this.userFish) 
-        this.userFish.body.setCollideWorldBounds(true, 1, 1)
         this.userFish.body.setCircle(850, 1600, 900)
    
         //FISH FOOD
