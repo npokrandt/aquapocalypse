@@ -7,15 +7,17 @@
     <button class="btn">High Scores</button>
   </a>
 </div>
-<h2>Lobby</h2>
+<div class="lobby-div">
+  <h2>Lobby</h2>
 
-{{#each users as |user| }}
-<div class="row align-center">
-  <div class="col-md-2">
-    <p class="home-page-text">{{user.name}}</p>
+  {{#each users as |user| }}
+  <div class="row align-center">
+    <div class="col-md-2">
+      <p class="home-page-text">{{user.name}}</p>
+    </div>
+    <div class="col-md-4">
+      <p class="home-page-text"><a href="mailto:{{user.email}}">{{user.email}}</a></p>
+    </div>
   </div>
-  <div class="col-md-4">
-    <p class="home-page-text"><a href="mailto:{{user.email}}">{{user.email}}</a></p>
-  </div>
+  {{/each}}
 </div>
-{{/each}}

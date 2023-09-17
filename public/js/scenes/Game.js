@@ -10,18 +10,30 @@ export default class Game extends Phaser.Scene {
         this.load.image('userFish', 'assets/user-fish.png')
         this.load.image('enemies', 'assets/bad-fish.png')
         this.load.image('fishFood', 'assets/fish-food.png')
+        this.load.image('background-1', 'assets/background-1.png')
+        this.load.image('bg-border', 'assets/bg-border.png')
     }
 
     //create the game
     create() { 
-       this.physics.world.setBounds(0, 0, 4000, 2500)
+        this.physics.world.setBounds(0, 0, 4000, 3000)
 
-       this.gameOver = false
+        this.background1 = this.add.tileSprite(-200, -200, 8000, 6000, 'background-1')
+            .setOrigin(0)
+            .setScrollFactor(0.25)
+       
+        this.bgBorder = this.add.image(2000, 1500, 'bg-border')
+            .setOrigin(0, 0)
+            .setPosition(-600, -500)
+            .setDisplaySize(5200, 4200)
+            .setScrollFactor(1)
+       
+        this.gameOver = false
 
-       const gameOverLabel2 = this.add.text(400, 450, 'Score saved!', {
+        const gameOverLabel2 = this.add.text(400, 450, 'Score saved!', {
           fontSize: 32,
           color: 'white'
-       })
+        })
 
        gameOverLabel2.setScrollFactor(0, 0)
        gameOverLabel2.setOrigin(0.5, 0.5)
@@ -218,8 +230,8 @@ export default class Game extends Phaser.Scene {
 
     update() {
         /** @type {Phaser.Physics.Arcade.StaticBody} */
-    
-         var speed = 5
+        this.background1.setTilePosition(this.cameras.main.scrollX, this.cameras.main.scrollY)
+         var speed = 15
 
         //the ball can move in all eight directions
         if (!this.gameOver){

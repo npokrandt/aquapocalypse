@@ -5,7 +5,8 @@ const config = {
     width: 800,
     height: 500,
     type: Phaser.AUTO,
-    backgroundColor: '#0711de',
+    backgroundColor: '#003a51',
+    parent: 'game-canvas',
     physics: {
         default: 'arcade',
         arcade: {
