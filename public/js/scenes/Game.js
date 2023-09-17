@@ -14,9 +14,9 @@ export default class Game extends Phaser.Scene {
         this.load.image('bg-pillar-1', 'assets/bg-pillar-1.png')
         this.load.image('bg-pillar-2', 'assets/bg-pillar-2.png')
         this.load.image('fg-shadow', 'assets/fg-shadow.png')
-        this.load.spritesheet('userFish', 'assets/user-fishies/user-spritesheet.png', {frameWidth: 1492, frameHeight: 1142})
+        this.load.atlas('userFish', 'assets/user-fishies/user-spritesheet.png', 'assets/user-fishies/user-spritesheet.json')
+        this.load.atlas('badFish', 'assets/bad-fishies/bad-spritesheet.png', 'assets/bad-fishies/bad-spritesheet.json')
         this.load.image('fishFood', 'assets/fish-food.png')
-        this.load.image('enemies', 'assets/bad-fish.png')
     }
 
     //create the game
@@ -69,16 +69,15 @@ export default class Game extends Phaser.Scene {
         let isDatabaseFull = false
 
         //USER FISH
-        this.userFish = this.physics.add.sprite(2000, 1250, 'userFish')
-        this.userFish.body.setCollideWorldBounds(true, 1, 1)
-        this.userFish.setScale(0.03)
         this.anims.create({
             key: 'swim',
-            frames: this.anims.generateFrameNumbers('userFish', {frames: [0, 1, 2, 3]}),
+            frames: 'userFish',
             frameRate: 10,
             repeat: -1
         })
-  
+        this.userFish = this.physics.add.sprite(2000, 1000).play('swim')
+        this.userFish.body.setCollideWorldBounds(true, 1, 1)
+        this.userFish.setScale(0.2)
         this.physics.add.existing(this.userFish) 
         this.userFish.body.setCircle(850, 1600, 900)
    
@@ -96,6 +95,13 @@ export default class Game extends Phaser.Scene {
         }
 
         //BAD FISHIES
+        this.anims.create({
+            key: 'badSwim',
+            frames: 'badFish',
+            frameRate: 10,
+            repeat: -1
+        })
+
         this.enemies = this.physics.add.group({
             key: 'enemies',
             frameQuantity: 10,
@@ -104,14 +110,15 @@ export default class Game extends Phaser.Scene {
             collideWorldBounds: true,
             velocityX: 1,
             velocityY: -1,
-            setScale: {x: 0.03, y: 0.03}
+            setScale: {x: 0.1, y: 0.1}
         });
         
         for (const enemy of this.enemies.getChildren()) {
-            let x = Phaser.Math.RND.between(50, 300);
-            let y = Phaser.Math.RND.between(50, 300);
+            let x = Phaser.Math.RND.between(50, 200);
+            let y = Phaser.Math.RND.between(50, 200);
             enemy.setVelocity(x, y)
             enemy.body.setCircle(850, 1600, 900)
+            enemy.play('badSwim')
         }
 
         this.fgShadow = this.add.tileSprite(0, 0, 3600, 3400, 'fg-shadow')
@@ -269,7 +276,6 @@ export default class Game extends Phaser.Scene {
         this.bgPillar1.setTilePosition(this.cameras.main.scrollX * 0.7, this.cameras.main.scrollY * 0.25) 
         this.bgPillar2.setTilePosition(this.cameras.main.scrollX * 0.75, this.cameras.main.scrollY * 0.15) 
         this.fgShadow.setTilePosition(this.cameras.main.scrollX * 0.8, this.cameras.main.scrollY * 0.1) 
-        this.userFish.play('swim')
 
         //the ball can move in all eight directions
         if (!this.gameOver){
