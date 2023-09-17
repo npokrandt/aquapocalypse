@@ -9,26 +9,64 @@ export default class Game extends Phaser.Scene {
     {
         //this.load.spritesheet('userFish', 'assets/user-fishies/user-fish.png', 'assets/spritesheet-user.json')
         this.load.image('fishFood', 'assets/fish-food.png')
+        this.load.image('bg', 'assets/bg.png')
+        this.load.image('bg-particle-1', 'assets/bg-particle-1.png')
+        this.load.image('bg-border', 'assets/bg-border.png')
+        this.load.image('bg-pillar-1', 'assets/bg-pillar-1.png')
+        this.load.image('bg-pillar-2', 'assets/bg-pillar-2.png')
+        this.load.image('fg-shadow', 'assets/fg-shadow.png')
     }
 
     //create the game
     create() { 
-       this.physics.world.setBounds(0, 0, 4000, 2500)
+        this.physics.world.setBounds(0, 0, 4000, 3000)
+        
+        this.bg = this.add.tileSprite(-200, -200, 7000, 3400, 'bg')
+            .setOrigin(0)
+            .setScrollFactor(0.5)
+        // this.background1 = this.add.tileSprite(-200, -200, 8000, 6000, 'background-1')
+        //     .setOrigin(0)
+        //     .setScrollFactor(0.5)
 
-       this.gameOver = false
+        this.bgPillar2 = this.add.tileSprite(0, 0, 3000, 3000, 'bg-pillar-2')
+            .setOrigin(0, 0)
+            .setPosition(-600, -100)
+            .setDisplaySize(3000, 1500)
+            .setScrollFactor(.15)
+            
+        this.bgParticle1 = this.add.tileSprite(0,0, 4000, 3000, 'bg-particle-1')
+            .setOrigin(0, 0)
+            .setPosition(0, -200)
+            .setTileScale(0.5, 0.5)
+            .setScrollFactor(.5)
 
-       const gameOverLabel2 = this.add.text(400, 450, 'Score saved!', {
-          fontSize: 32,
-          color: 'white'
-       })
+        this.bgPillar1 = this.add.tileSprite(300, 0, 4000, 3000, 'bg-pillar-1')
+            .setOrigin(0, 0)
+            .setPosition(-600, -500)
+            .setDisplaySize(5200, 4200)
+            .setScrollFactor(.25)
+       
+        this.bgBorder = this.add.image(2000, 1500, 'bg-border')
+            .setOrigin(0, 0)
+            .setPosition(-600, -500)
+            .setDisplaySize(5200, 4200)
+            .setScrollFactor(1)
 
-       gameOverLabel2.setScrollFactor(0, 0)
-       gameOverLabel2.setOrigin(0.5, 0.5)
-       gameOverLabel2.visible = false
+            
+        this.gameOver = false
+            
+        const gameOverLabel2 = this.add.text(400, 450, 'Score saved!', {
+            fontSize: 32,
+            color: 'white'
+        })
 
-       let isDatabaseFull = false
+        gameOverLabel2.setScrollFactor(0, 0)
+        gameOverLabel2.setOrigin(0.5, 0.5)
+        gameOverLabel2.visible = false
 
-       //this.cameras.main.setZoom(0.5)
+        let isDatabaseFull = false
+
+        //this.cameras.main.setZoom(0.5)
 
         //this.add.image(0, 0, 'bg')
         // const {width, height} = camera
@@ -44,8 +82,7 @@ export default class Game extends Phaser.Scene {
         this.userFish.setScale(0.03)
         this.physics.add.existing(this.userFish) 
         this.userFish.body.setCollideWorldBounds(true, 1, 1)
-
-        this.userFish.on(cursor.isDown)
+        this.userFish.body.setCircle(850, 1600, 900)
    
         //FISH FOOD
         this.foodPieces = this.physics.add.group({
@@ -55,6 +92,10 @@ export default class Game extends Phaser.Scene {
         }); 
 
         Phaser.Actions.RandomRectangle(this.foodPieces.getChildren(), new Phaser.Geom.Rectangle(50, 50, 3900, 2400))
+
+        for (const foodPiece of this.foodPieces.getChildren()) {
+            foodPiece.body.setCircle(420, 50, 50)
+        }
 
         //BAD FISHIES
         this.enemies = this.physics.add.group({
@@ -67,20 +108,27 @@ export default class Game extends Phaser.Scene {
             velocityY: -1,
             setScale: {x: 0.03, y: 0.03}
         });
-
+        
         for (const enemy of this.enemies.getChildren()) {
             let x = Phaser.Math.RND.between(50, 250);
             let y = Phaser.Math.RND.between(50, 250);
             enemy.setVelocity(x, y)
+            enemy.body.setCircle(850, 1600, 900)
         }
+
+        this.fgShadow = this.add.tileSprite(0, 0, 3600, 3400, 'fg-shadow')
+            .setOrigin(0, 0)
+            .setPosition(-1200, -600)
+            .setDisplaySize(5200, 4200)
+            .setScrollFactor(.9)
 
         //SCORE
         let score = 0;
-        this.scoreLabel = this.add.text(400, 50, 'Score: 0', {
-            fontSize: 48,
+        this.scoreLabel = this.add.text(400, 32, 'Score: 0', {
+            fontSize: 32,
             color: 'white'
         })
-
+        
         this.scoreLabel.setScrollFactor(0, 0)
         this.scoreLabel.setOrigin(0.5, 0.5)
 
@@ -219,37 +267,50 @@ export default class Game extends Phaser.Scene {
 
     update() {
         /** @type {Phaser.Physics.Arcade.StaticBody} */
-    
-         var speed = 5
-
+        this.bg.setTilePosition(this.cameras.main.scrollX)
+        this.bgParticle1.setTilePosition(this.cameras.main.scrollX * 0.5, this.cameras.main.scrollY * 0.5)
+        this.bgPillar1.setTilePosition(this.cameras.main.scrollX * 0.7, this.cameras.main.scrollY * 0.25) 
+        this.bgPillar2.setTilePosition(this.cameras.main.scrollX * 0.75, this.cameras.main.scrollY * 0.15) 
+        this.fgShadow.setTilePosition(this.cameras.main.scrollX * 0.8, this.cameras.main.scrollY * 0.1) 
+        
         //the ball can move in all eight directions
         if (!this.gameOver){
+            const speed = 10
+            const offsetXRight = 1600
+            const offsetXLeft = 800
+            const offsetY = 900
             if (this.cursors.up.isDown && this.cursors.left.isDown){
                 this.userFish.y -= speed
                 this.userFish.x -= speed
-                this.userFish.flipX = true;
+                this.userFish.flipX = true
+                this.userFish.body.setCircle(850, offsetXLeft, offsetY)
             } else if (this.cursors.up.isDown && this.cursors.right.isDown){
                 this.userFish.y -= speed
                 this.userFish.x += speed
-                this.userFish.flipX = false;
+                this.userFish.flipX = false
+                this.userFish.body.setCircle(850, offsetXRight, offsetY)
             }else if (this.cursors.down.isDown && this.cursors.left.isDown){
                 this.userFish.y += speed
                 this.userFish.x -= speed
-                this.userFish.flipX = true;
+                this.userFish.flipX = true
+                this.userFish.body.setCircle(850, offsetXLeft, offsetY)
             }else if (this.cursors.down.isDown && this.cursors.right.isDown){
                 this.userFish.y += speed
                 this.userFish.x += speed
-                this.userFish.flipX = false;
+                this.userFish.flipX = false
+                this.userFish.body.setCircle(850, offsetXRight, offsetY)
             } else if (this.cursors.up.isDown) {
                 this.userFish.y -= speed
             } else if (this.cursors.down.isDown) {
                 this.userFish.y += speed
             } else if (this.cursors.right.isDown){
                 this.userFish.x += speed
-                this.userFish.flipX = false;
+                this.userFish.flipX = false
+                this.userFish.body.setCircle(850, offsetXRight, offsetY)
             } else if (this.cursors.left.isDown){
                 this.userFish.x -= speed
-                this.userFish.flipX = true;
+                this.userFish.flipX = true
+                this.userFish.body.setCircle(850, offsetXLeft, offsetY)
             }
         }
         

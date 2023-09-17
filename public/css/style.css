@@ -10,6 +10,24 @@ label, input {
     display: block;
 }
 
+h1, h2, h3, h4 {
+    color: #d5da80;
+}
+
+#game-canvas {
+    display: block;
+    width: 806px;
+    height:506px;
+    margin: 0 auto;
+    border: 3px solid #000;
+}
+
+.logo {
+    margin-left: 1rem;
+    display: flex;
+    width: 40rem;
+}
+
 .btn {
     margin: 1rem;
     color: #f0f0ef;
@@ -24,6 +42,7 @@ label, input {
 
 .home-page-text {
     margin-bottom: 0;
+    color: #d5da80;
 }
 
 
