@@ -14,7 +14,7 @@ export default class Game extends Phaser.Scene {
         this.load.image('bg-pillar-1', 'assets/bg-pillar-1.png')
         this.load.image('bg-pillar-2', 'assets/bg-pillar-2.png')
         this.load.image('fg-shadow', 'assets/fg-shadow.png')
-        this.load.spritesheet('userFish', 'assets/user-fishies/user-spritesheet.png', {frameWidth: 1788, frameHeight: 684})
+        this.load.spritesheet('userFish', 'assets/user-fishies/user-spritesheet.png', {frameWidth: 1492, frameHeight: 1142})
         this.load.image('fishFood', 'assets/fish-food.png')
         this.load.image('enemies', 'assets/bad-fish.png')
     }
@@ -71,13 +71,14 @@ export default class Game extends Phaser.Scene {
         //USER FISH
         this.userFish = this.physics.add.sprite(2000, 1250, 'userFish')
         this.userFish.body.setCollideWorldBounds(true, 1, 1)
+        this.userFish.setScale(0.03)
         this.anims.create({
             key: 'swim',
-            frames: this.anims.generateFrameNumbers('userFish', {start: 0, end: 0}),
+            frames: this.anims.generateFrameNumbers('userFish', {frames: [0, 1, 2, 3]}),
             frameRate: 10,
             repeat: -1
         })
-        this.userFish.setScale(0.03)
+  
         this.physics.add.existing(this.userFish) 
         this.userFish.body.setCircle(850, 1600, 900)
    
@@ -268,7 +269,8 @@ export default class Game extends Phaser.Scene {
         this.bgPillar1.setTilePosition(this.cameras.main.scrollX * 0.7, this.cameras.main.scrollY * 0.25) 
         this.bgPillar2.setTilePosition(this.cameras.main.scrollX * 0.75, this.cameras.main.scrollY * 0.15) 
         this.fgShadow.setTilePosition(this.cameras.main.scrollX * 0.8, this.cameras.main.scrollY * 0.1) 
-        
+        this.userFish.play('swim')
+
         //the ball can move in all eight directions
         if (!this.gameOver){
             const speed = 10
