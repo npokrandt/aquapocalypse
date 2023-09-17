@@ -5,12 +5,13 @@ const config = {
     width: 800,
     height: 500,
     type: Phaser.AUTO,
-    backgroundColor: '#0711de',
+    backgroundColor: '#000000',
+    parent: 'game-canvas',
     physics: {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: false
+            debug: true
         }
     }
 }
