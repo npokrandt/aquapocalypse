@@ -1,5 +1,4 @@
 const Sequelize = require('sequelize');
-const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 require('dotenv').config();
 
@@ -20,10 +19,4 @@ if (process.env.JAWSDB_URL) {
   );
 }
 
-module.exports = {sequelize,
-  plugins:  
-      new CopyWebpackPlugin({
-        patterns: [
-          { from: './src/assets/spritesheets', to : 'assets/spritesheets' }
-        ]
-      })}
+module.exports = sequelize
