@@ -7,7 +7,7 @@ export default class Game extends Phaser.Scene {
 
     preload()
     {
-        this.load.spritesheet('userFish', 'assets/user-fishies/user-fish.png', 'assets/spritesheet-user.json')
+        //this.load.spritesheet('userFish', 'assets/user-fishies/user-fish.png', 'assets/spritesheet-user.json')
         this.load.image('fishFood', 'assets/fish-food.png')
     }
 
