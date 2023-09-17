@@ -77,7 +77,7 @@ export default class Game extends Phaser.Scene {
         })
         this.userFish = this.physics.add.sprite(2000, 1000).play('swim')
         this.userFish.body.setCollideWorldBounds(true, 1, 1)
-        this.userFish.setScale(0.2)
+        this.userFish.setScale(0.1)
         this.physics.add.existing(this.userFish) 
         this.userFish.body.setCircle(850, 1600, 900)
    
