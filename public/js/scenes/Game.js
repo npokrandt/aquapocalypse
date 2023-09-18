@@ -79,7 +79,7 @@ export default class Game extends Phaser.Scene {
         this.userFish.body.setCollideWorldBounds(true, 1, 1)
         this.userFish.setScale(0.1)
         this.physics.add.existing(this.userFish) 
-        this.userFish.body.setCircle(850, 1600, 900)
+        this.userFish.body.setCircle(350, 100, 0)
    
         //FISH FOOD
         this.foodPieces = this.physics.add.group({
@@ -117,7 +117,7 @@ export default class Game extends Phaser.Scene {
             let x = Phaser.Math.RND.between(50, 200);
             let y = Phaser.Math.RND.between(50, 200);
             enemy.setVelocity(x, y)
-            enemy.body.setCircle(850, 1600, 900)
+            enemy.body.setCircle(350, 100, 0)
             enemy.play('badSwim')
         }
 
@@ -290,46 +290,54 @@ export default class Game extends Phaser.Scene {
         this.fgShadow.setTilePosition(this.cameras.main.scrollX * 0.8, this.cameras.main.scrollY * 0.1) 
 
         //the ball can move in all eight directions
-        if (!this.gameOver){
-            const speed = 10
-            const offsetXRight = 1600
-            const offsetXLeft = 800
-            const offsetY = 900
-            if (this.cursors.up.isDown && this.cursors.left.isDown){
-                this.userFish.y -= speed
-                this.userFish.x -= speed
-                this.userFish.flipX = true
-                this.userFish.body.setCircle(850, offsetXLeft, offsetY)
-            } else if (this.cursors.up.isDown && this.cursors.right.isDown){
-                this.userFish.y -= speed
-                this.userFish.x += speed
-                this.userFish.flipX = false
-                this.userFish.body.setCircle(850, offsetXRight, offsetY)
-            }else if (this.cursors.down.isDown && this.cursors.left.isDown){
-                this.userFish.y += speed
-                this.userFish.x -= speed
-                this.userFish.flipX = true
-                this.userFish.body.setCircle(850, offsetXLeft, offsetY)
-            }else if (this.cursors.down.isDown && this.cursors.right.isDown){
-                this.userFish.y += speed
-                this.userFish.x += speed
-                this.userFish.flipX = false
-                this.userFish.body.setCircle(850, offsetXRight, offsetY)
-            } else if (this.cursors.up.isDown) {
-                this.userFish.y -= speed
-            } else if (this.cursors.down.isDown) {
-                this.userFish.y += speed
-            } else if (this.cursors.right.isDown){
-                this.userFish.x += speed
-                this.userFish.flipX = false
-                this.userFish.body.setCircle(850, offsetXRight, offsetY)
-            } else if (this.cursors.left.isDown){
-                this.userFish.x -= speed
-                this.userFish.flipX = true
-                this.userFish.body.setCircle(850, offsetXLeft, offsetY)
-            }
-        } else if (this.gameOver && Phaser.Input.Keyboard.JustDown(this.spacebar)) {
-            this.scene.restart()
+
+        const updateColliderPosition = () => {
+            let offsetX = this.userFish.flipX ? -20 : 100;
+            let offsetY = 0;
+            this.userFish.body.setCircle(350, offsetX, offsetY);
         }
+
+    if (!this.gameOver){
+        const speed = 10;
+
+        if (this.cursors.up.isDown && this.cursors.left.isDown){
+            this.userFish.y -= speed;
+            this.userFish.x -= speed;
+            this.userFish.flipX = true;
+            updateColliderPosition();
+        } else if (this.cursors.up.isDown && this.cursors.right.isDown){
+            this.userFish.y -= speed;
+            this.userFish.x += speed;
+            this.userFish.flipX = false;
+            updateColliderPosition();
+        } else if (this.cursors.down.isDown && this.cursors.left.isDown){
+            this.userFish.y += speed;
+            this.userFish.x -= speed;
+            this.userFish.flipX = true;
+            updateColliderPosition();
+        } else if (this.cursors.down.isDown && this.cursors.right.isDown){
+            this.userFish.y += speed;
+            this.userFish.x += speed;
+            this.userFish.flipX = false;
+            updateColliderPosition();
+        } else if (this.cursors.up.isDown) {
+            this.userFish.y -= speed;
+            updateColliderPosition();
+        } else if (this.cursors.down.isDown) {
+            this.userFish.y += speed;
+            updateColliderPosition();
+        } else if (this.cursors.right.isDown){
+            this.userFish.x += speed;
+            this.userFish.flipX = false;
+            updateColliderPosition();
+        } else if (this.cursors.left.isDown){
+            this.userFish.x -= speed;
+            this.userFish.flipX = true;
+            updateColliderPosition();
+        }
+    } else if (this.gameOver && Phaser.Input.Keyboard.JustDown(this.spacebar)) {
+        this.scene.restart();
+    }
+
     }
 }
