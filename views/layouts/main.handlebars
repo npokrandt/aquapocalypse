@@ -20,17 +20,22 @@
     </a>
       
     <nav>
+      <a href="/high-scores">
+        <button class="btn">High Scores</button>
+      </a>
       <button class="btn" id="logout">{{> log-in-out }}</button>
     </nav>
   </header>
-  <main class="container container-fluid mt-5">
-    {{{ body }}}
-  </main>
-  <footer class="text-center my-3">
-      <p class="footer-text">
-          &copy; 2023 by Aquapocalypse. All Rights Reserved. 
-      </p>
-  </footer>
+  <div class="game-flex-container">
+    <main class="container container-fluid mt-5">
+      {{{ body }}}
+    </main>
+    <footer class="text-center my-3">
+        <p class="footer-text">
+            &copy; 2023 by Aquapocalypse. All Rights Reserved. 
+        </p>
+    </footer>
+  </div>
 
   {{#if logged_in}}
   <script src="/js/logout.js"></script>

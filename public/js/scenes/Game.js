@@ -54,7 +54,7 @@ export default class Game extends Phaser.Scene {
             .setDisplaySize(5200, 4200)
             .setScrollFactor(1)
 
-            
+        this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)    
         this.gameOver = false
             
         const gameOverLabel2 = this.add.text(400, 450, 'Score saved!', {
@@ -79,7 +79,7 @@ export default class Game extends Phaser.Scene {
         this.userFish.body.setCollideWorldBounds(true, 1, 1)
         this.userFish.setScale(0.1)
         this.physics.add.existing(this.userFish) 
-        this.userFish.body.setCircle(850, 1600, 900)
+        this.userFish.body.setCircle(350, 100, 0)
    
         //FISH FOOD
         this.foodPieces = this.physics.add.group({
@@ -117,7 +117,7 @@ export default class Game extends Phaser.Scene {
             let x = Phaser.Math.RND.between(50, 200);
             let y = Phaser.Math.RND.between(50, 200);
             enemy.setVelocity(x, y)
-            enemy.body.setCircle(850, 1600, 900)
+            enemy.body.setCircle(350, 100, 0)
             enemy.play('badSwim')
         }
 
@@ -129,9 +129,9 @@ export default class Game extends Phaser.Scene {
 
         //SCORE
         let score = 0;
-        this.scoreLabel = this.add.text(400, 32, 'Score: 0', {
-            fontSize: 32,
-            color: 'white'
+        this.scoreLabel = this.add.text(0, 80, 'Score: 0', {
+            fontSize: 48,
+            color: '#c2c675'
         })
         
         this.scoreLabel.setScrollFactor(0, 0)
@@ -163,19 +163,30 @@ export default class Game extends Phaser.Scene {
         );
 
         function gameOver(){
-            this.gameOver = true
-            this.gameOverLabel = this.add.text(400, 250, 'GAME OVER!', {
-                fontSize: 100,
-                color: 'white'
+            this.gameOver = true;
+    
+            const camera = this.cameras.main;
+            
+            this.gameOverLabel = this.add.text(camera.width / 2, camera.height / 2, 'GAME OVER!', {
+                fontSize: 150,
+                color: '#c2c675'
             })
+            .setOrigin(0.5, 0.5)
+            const offset = this.gameOverLabel.height / 2 + 50
+            this.spaceLabel = this.add.text(camera.width / 2, (camera.height / 2) + offset, 'Press space to continue.', {
+                fontSize: 50,
+                color: '#c2c675'
+            })
+            .setOrigin(0.5, 0.5)
     
             this.gameOverLabel.setScrollFactor(0, 0)
             this.gameOverLabel.setOrigin(0.5, 0.5)
+            
+            this.spaceLabel.setScrollFactor(0,0)
+            this.spaceLabel.setOrigin(0.5, 0.5)
 
             this.userFish.destroy()
-
-            //was here
-            
+        
             checkDatabase()
         }
 
@@ -271,6 +282,7 @@ export default class Game extends Phaser.Scene {
 
     update() {
         /** @type {Phaser.Physics.Arcade.StaticBody} */
+        this.scoreLabel.x = this.cameras.main.width / 2
         this.bg.setTilePosition(this.cameras.main.scrollX)
         this.bgParticle1.setTilePosition(this.cameras.main.scrollX * 0.5, this.cameras.main.scrollY * 0.5)
         this.bgPillar1.setTilePosition(this.cameras.main.scrollX * 0.7, this.cameras.main.scrollY * 0.25) 
@@ -278,44 +290,54 @@ export default class Game extends Phaser.Scene {
         this.fgShadow.setTilePosition(this.cameras.main.scrollX * 0.8, this.cameras.main.scrollY * 0.1) 
 
         //the ball can move in all eight directions
-        if (!this.gameOver){
-            const speed = 10
-            const offsetXRight = 1600
-            const offsetXLeft = 800
-            const offsetY = 900
-            if (this.cursors.up.isDown && this.cursors.left.isDown){
-                this.userFish.y -= speed
-                this.userFish.x -= speed
-                this.userFish.flipX = true
-                this.userFish.body.setCircle(850, offsetXLeft, offsetY)
-            } else if (this.cursors.up.isDown && this.cursors.right.isDown){
-                this.userFish.y -= speed
-                this.userFish.x += speed
-                this.userFish.flipX = false
-                this.userFish.body.setCircle(850, offsetXRight, offsetY)
-            }else if (this.cursors.down.isDown && this.cursors.left.isDown){
-                this.userFish.y += speed
-                this.userFish.x -= speed
-                this.userFish.flipX = true
-                this.userFish.body.setCircle(850, offsetXLeft, offsetY)
-            }else if (this.cursors.down.isDown && this.cursors.right.isDown){
-                this.userFish.y += speed
-                this.userFish.x += speed
-                this.userFish.flipX = false
-                this.userFish.body.setCircle(850, offsetXRight, offsetY)
-            } else if (this.cursors.up.isDown) {
-                this.userFish.y -= speed
-            } else if (this.cursors.down.isDown) {
-                this.userFish.y += speed
-            } else if (this.cursors.right.isDown){
-                this.userFish.x += speed
-                this.userFish.flipX = false
-                this.userFish.body.setCircle(850, offsetXRight, offsetY)
-            } else if (this.cursors.left.isDown){
-                this.userFish.x -= speed
-                this.userFish.flipX = true
-                this.userFish.body.setCircle(850, offsetXLeft, offsetY)
-            }
+
+        const updateColliderPosition = () => {
+            let offsetX = this.userFish.flipX ? -20 : 100;
+            let offsetY = 0;
+            this.userFish.body.setCircle(350, offsetX, offsetY);
         }
+
+    if (!this.gameOver){
+        const speed = 10;
+
+        if (this.cursors.up.isDown && this.cursors.left.isDown){
+            this.userFish.y -= speed;
+            this.userFish.x -= speed;
+            this.userFish.flipX = true;
+            updateColliderPosition();
+        } else if (this.cursors.up.isDown && this.cursors.right.isDown){
+            this.userFish.y -= speed;
+            this.userFish.x += speed;
+            this.userFish.flipX = false;
+            updateColliderPosition();
+        } else if (this.cursors.down.isDown && this.cursors.left.isDown){
+            this.userFish.y += speed;
+            this.userFish.x -= speed;
+            this.userFish.flipX = true;
+            updateColliderPosition();
+        } else if (this.cursors.down.isDown && this.cursors.right.isDown){
+            this.userFish.y += speed;
+            this.userFish.x += speed;
+            this.userFish.flipX = false;
+            updateColliderPosition();
+        } else if (this.cursors.up.isDown) {
+            this.userFish.y -= speed;
+            updateColliderPosition();
+        } else if (this.cursors.down.isDown) {
+            this.userFish.y += speed;
+            updateColliderPosition();
+        } else if (this.cursors.right.isDown){
+            this.userFish.x += speed;
+            this.userFish.flipX = false;
+            updateColliderPosition();
+        } else if (this.cursors.left.isDown){
+            this.userFish.x -= speed;
+            this.userFish.flipX = true;
+            updateColliderPosition();
+        }
+    } else if (this.gameOver && Phaser.Input.Keyboard.JustDown(this.spacebar)) {
+        this.scene.restart();
+    }
+
     }
 }

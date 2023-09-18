@@ -2,8 +2,8 @@ import TitleScreen from './scenes/TitleScreen.js'
 import Game from './scenes/Game.js'
 
 const config = {
-    width: 800,
-    height: 500,
+    width: window.innerWidth,
+    height: window.innerHeight,
     type: Phaser.AUTO,
     backgroundColor: '#000000',
     parent: 'game-canvas',
@@ -11,7 +11,7 @@ const config = {
         default: 'arcade',
         arcade: {
             gravity: { y: 0 },
-            debug: false
+            debug: true
         }
     }
 }
@@ -23,3 +23,7 @@ game.scene.add('game', Game)
 
 // game.scene.start('titlescreen')
 game.scene.start('game')
+
+window.addEventListener('resize', () => {
+    game.scale.resize(window.innerWidth, window.innerHeight);
+})
