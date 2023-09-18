@@ -46,20 +46,20 @@ router.post('/logout', (req, res) => {
 
 router.post('/create-account', async (req, res) => {
   console.log("Inside POST /api/create-account")
-  const { email, name, password } = req.body
+  const { email, username, password } = req.body
   
-  if (!email || !name || !password) {
+  if (!email || !username || !password) { 
     return res.status(400).json('you need an email, username, and password to create an account')
   }
 
   try {
     const userData = await User.create({
       email,
-      name,
+      name: username,
       password,
     })
-    console.log('User created:', userData)
-    res.redirect('/login')
+    //console.log('User created:', userData)
+    res.status(201).json('User created!')
   } catch (err) {
     console.error("Error while creating account:", err);
     res.status(500).json({ error: "Internal Server Error" });

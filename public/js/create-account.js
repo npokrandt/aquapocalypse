@@ -10,14 +10,21 @@ const handleSubmit = e => {
         username: usernameInput.value,
         password: passwordInput.value,
     }
-    fetch('/api/create-account', {
+
+    //console.log(JSON.stringify(newUser))
+    fetch('/api/users/create-account', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(newUser),
     })
-        .then(response => console.log(response))
+        .then(response => {
+            console.log(response)
+            if (response.ok){
+                document.location.replace('/login');
+            }
+        })
         .catch(err => console.log(err))
 }
 
