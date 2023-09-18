@@ -54,7 +54,7 @@ export default class Game extends Phaser.Scene {
             .setDisplaySize(5200, 4200)
             .setScrollFactor(1)
 
-            
+        this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)    
         this.gameOver = false
             
         const gameOverLabel2 = this.add.text(400, 450, 'Score saved!', {
@@ -129,9 +129,9 @@ export default class Game extends Phaser.Scene {
 
         //SCORE
         let score = 0;
-        this.scoreLabel = this.add.text(400, 32, 'Score: 0', {
-            fontSize: 32,
-            color: 'white'
+        this.scoreLabel = this.add.text(0, 80, 'Score: 0', {
+            fontSize: 48,
+            color: '#c2c675'
         })
         
         this.scoreLabel.setScrollFactor(0, 0)
@@ -163,19 +163,30 @@ export default class Game extends Phaser.Scene {
         );
 
         function gameOver(){
-            this.gameOver = true
-            this.gameOverLabel = this.add.text(400, 250, 'GAME OVER!', {
-                fontSize: 100,
-                color: 'white'
+            this.gameOver = true;
+    
+            const camera = this.cameras.main;
+            
+            this.gameOverLabel = this.add.text(camera.width / 2, camera.height / 2, 'GAME OVER!', {
+                fontSize: 150,
+                color: '#c2c675'
             })
+            .setOrigin(0.5, 0.5)
+            const offset = this.gameOverLabel.height / 2 + 50
+            this.spaceLabel = this.add.text(camera.width / 2, (camera.height / 2) + offset, 'Press space to continue.', {
+                fontSize: 50,
+                color: '#c2c675'
+            })
+            .setOrigin(0.5, 0.5)
     
             this.gameOverLabel.setScrollFactor(0, 0)
             this.gameOverLabel.setOrigin(0.5, 0.5)
+            
+            this.spaceLabel.setScrollFactor(0,0)
+            this.spaceLabel.setOrigin(0.5, 0.5)
 
             this.userFish.destroy()
-
-            //was here
-            
+        
             checkDatabase()
         }
 
@@ -271,6 +282,7 @@ export default class Game extends Phaser.Scene {
 
     update() {
         /** @type {Phaser.Physics.Arcade.StaticBody} */
+        this.scoreLabel.x = this.cameras.main.width / 2
         this.bg.setTilePosition(this.cameras.main.scrollX)
         this.bgParticle1.setTilePosition(this.cameras.main.scrollX * 0.5, this.cameras.main.scrollY * 0.5)
         this.bgPillar1.setTilePosition(this.cameras.main.scrollX * 0.7, this.cameras.main.scrollY * 0.25) 
@@ -316,6 +328,8 @@ export default class Game extends Phaser.Scene {
                 this.userFish.flipX = true
                 this.userFish.body.setCircle(850, offsetXLeft, offsetY)
             }
+        } else if (this.gameOver && Phaser.Input.Keyboard.JustDown(this.spacebar)) {
+            this.scene.restart()
         }
     }
 }
