@@ -1,33 +1,32 @@
 # Aquapocalypse
 
-Tuesday:
-Learn phaser and develop the game
+One day, the zombie apocalypse occured. While that caused major issues amongst humanity, no one expected that it might affect the inhabitants of the ocean as well!
 
-Create seeds
-Remove Player and  from db, and add Scores
+## Description
 
+Aquapocalypse is an IO-patterred game in which the player swims around collecting food while avoiding enemy fish. The food is worth points, and the player tries to collect as much food as possible
 
-I am a fish
-The enemies are ais
-There may be other player fish
+## Technologies
 
-Fish all have a point value
-Larger fish eats smaller fish and gains its points
+Aquapocalypse uses phaser to create the game, express and sequelize to store data, session to keep track of logins, and handlebars for HTML templating.
 
-Start with single player, and add mp if time (could be a future development)
+## Usage
 
-What to research in phaser?
-Large playing space
-fish food stuff
-obstacles/safe havens
-layers?
-ground -> fish layer -> hidey holes e.g. lily pads
-stick items to the camera
+To play the game, you must log in as a user. The user is first asked to create an account by giving a username, email address and password. Once given, the user can log in and log out as much as they want to. Once logged in the user is presented with the lobby page. From there they can play the game, see high scores or just log out. The game is explained below. 
 
-Other phaser tutorials
+pictures here
 
-Current size = 800 x 500
+## Gameplay
 
-Would like 5x larger
+Upon game start, the user is spawned into the map, along with lots of food and 10 enemy fish. The player can move around the map, where there is plenty of food. Each piece of food is worth 10 points. The user must avoid the enemy fish while they collect the food. If they touch any of the enemy fish, the game is over.
 
-Final size = 4000 x 2500
+gameplay picture
+
+## Link
+
+Play the game here:
+link here
+
+## Notes
+
+Notes about any borrowed code
