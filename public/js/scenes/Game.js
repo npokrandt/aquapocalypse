@@ -170,8 +170,7 @@ export default class Game extends Phaser.Scene {
             this
 
             )
-        )
-            
+
             this.physics.add.collider(
                 this.userFish, 
                 this.enemies,
