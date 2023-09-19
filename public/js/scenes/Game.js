@@ -29,7 +29,7 @@ export default class Game extends Phaser.Scene {
     //create the game
     create() { 
         this.physics.world.setBounds(0, 0, 4000, 3000)
-        this.sound.play('theme')
+        this.sound.play('theme', { loop: true })
         
         this.bg = this.add.tileSprite(0, 0, 5000, 5000, 'bg')
             .setOrigin(0)
@@ -184,6 +184,7 @@ export default class Game extends Phaser.Scene {
 
                     const randomUserSound = Phaser.Math.RND.pick(this.eatUserSounds)
                     this.sound.play(randomUserSound)
+                    this.sound.stopByKey('theme')
                     
                     const camera = this.cameras.main;
                     
