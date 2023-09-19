@@ -18,17 +18,19 @@ export default class Game extends Phaser.Scene {
     create() { 
         this.physics.world.setBounds(0, 0, 4000, 3000)
         
-        this.bg = this.add.tileSprite(-200, -200, 7000, 3400, 'bg')
+        this.bg = this.add.tileSprite(0, 0, 5000, 5000, 'bg')
             .setOrigin(0)
             .setScrollFactor(0.5)
+            .setDisplaySize(5000, 7000)
+            .setPosition(0, -250)
         // this.background1 = this.add.tileSprite(-200, -200, 8000, 6000, 'background-1')
         //     .setOrigin(0)
         //     .setScrollFactor(0.5)
 
         this.bgPillar2 = this.add.tileSprite(0, 0, 3000, 3000, 'bg-pillar-2')
             .setOrigin(0, 0)
-            .setPosition(-600, -100)
-            .setDisplaySize(3000, 1500)
+            .setPosition(-600, -800)
+            .setDisplaySize(5000, 5000)
             .setScrollFactor(.15)
             
         this.bgParticle1 = this.add.tileSprite(0,0, 4000, 3000, 'bg-particle-1')
@@ -37,16 +39,16 @@ export default class Game extends Phaser.Scene {
             .setTileScale(0.5, 0.5)
             .setScrollFactor(.5)
 
-        this.bgPillar1 = this.add.tileSprite(300, 0, 4000, 3000, 'bg-pillar-1')
+        this.bgPillar1 = this.add.tileSprite(300, 0, 3000, 2500, 'bg-pillar-1')
             .setOrigin(0, 0)
-            .setPosition(-600, -500)
-            .setDisplaySize(5200, 4200)
-            .setScrollFactor(.25)
+            .setPosition(-600, -400)
+            .setDisplaySize(5000, 5000)
+            .setScrollFactor(.3)
        
-        this.bgBorder = this.add.image(2000, 1500, 'bg-border')
+        this.bgBorder = this.add.image(3000, 3000, 'bg-border')
             .setOrigin(0, 0)
-            .setPosition(-600, -500)
-            .setDisplaySize(5200, 4200)
+            .setPosition(-1000, -550)
+            .setDisplaySize(6000, 4200)
             .setScrollFactor(1)
 
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)    
@@ -71,13 +73,13 @@ export default class Game extends Phaser.Scene {
         this.foodPieces = this.physics.add.group({
             key: 'fishFood',
             frameQuantity: 200,
-            setScale: {x: 0.02, y: 0.02}
+            // setScale: {x: 0.02, y: 0.02}
         }); 
 
         Phaser.Actions.RandomRectangle(this.foodPieces.getChildren(), new Phaser.Geom.Rectangle(50, 50, 3900, 2400))
 
         for (const foodPiece of this.foodPieces.getChildren()) {
-            foodPiece.body.setCircle(420, 50, 50)
+            foodPiece.body.setCircle(8, 0, 0)
         }
 
         //BAD FISHIES
@@ -107,10 +109,10 @@ export default class Game extends Phaser.Scene {
             enemy.play('badSwim')
         }
 
-        this.fgShadow = this.add.tileSprite(0, 0, 3600, 3400, 'fg-shadow')
+        this.fgShadow = this.add.tileSprite(0, 0, 3000, 1500, 'fg-shadow')
             .setOrigin(0, 0)
-            .setPosition(-1200, -600)
-            .setDisplaySize(5200, 4200)
+            .setPosition(-1200, -700)
+            .setDisplaySize(6000, 8500)
             .setScrollFactor(.9)
 
         //SCORE
@@ -284,7 +286,7 @@ export default class Game extends Phaser.Scene {
         }
 
     if (!this.gameOver){
-        const speed = 3;
+        const speed = 10;
 
         if (this.cursors.up.isDown && this.cursors.left.isDown){ 
             this.userFish.y -= speed;

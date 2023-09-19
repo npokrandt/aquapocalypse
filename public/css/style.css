@@ -19,7 +19,7 @@ body {
     flex-direction: column;
     height: 100vh;
     margin: 0;
-    background-color: #6D6D64;
+    background-color: #2B3D41;
 }
 
 label, input {
@@ -42,20 +42,19 @@ h1, h2, h3, h4 {
     flex-direction: column;
 }
 
-#game-canvas canvas {
+#game-canvas, #home-canvas {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: -1;
-  }
-
+    overflow: hidden;
+}
 
 .btn {
     margin: 1rem;
     text-decoration: none;
-
 }
 
 #logout {
@@ -73,6 +72,26 @@ h1, h2, h3, h4 {
     color: #d5da80;
 }
 
+.lobby-div {
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    width: 20%;
+}
+
+.lobby-label {
+    display: flex;
+    justify-content: space-between;
+    background-color: #95A3B3;
+}
+
+.main-home-div {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%; 
+}
 
 
 
