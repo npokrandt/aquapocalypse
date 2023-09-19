@@ -134,19 +134,18 @@ export default class Game extends Phaser.Scene {
             this.userFish, 
             this.foodPieces, 
             function eatFood(user, food) {
-                food.disableBody(true, true); 
+                food.disableBody(true, true);
                 score += 10; 
-                this.scoreLabel.setText('Score: ' + score);
+                this.scoreLabel.setText('Score: ' + score)
         
-                // Re-enable the body at a new random position
-                let newFoodX = Phaser.Math.Between(50, 3900);
-                let newFoodY = Phaser.Math.Between(50, 2400);
-                food.enableBody(true, newFoodX, newFoodY, true, true);
-                food.body.setCircle(8, 0, 0);
+                let newFoodX = Phaser.Math.Between(50, 3900)
+                let newFoodY = Phaser.Math.Between(50, 2400)
+                food.enableBody(true, newFoodX, newFoodY, true, true)
+                food.body.setCircle(8, 0, 0)
             }, 
             null, 
             this
-        );
+        )
 
         this.physics.add.collider(
             this.userFish, 
