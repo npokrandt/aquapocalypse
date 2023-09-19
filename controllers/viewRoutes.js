@@ -15,8 +15,6 @@ router.get('/', withAuth, async (req, res) => {
       raw: true
     })
 
-    console.log(req.session.user_id)
-
     res.render('homepage', {
       users,
       loggedInUser,
