@@ -1,5 +1,6 @@
 export default class Game extends Phaser.Scene {
 
+    //can I get enemies to flip and rotate the same way player does?
     preload()
     {
         //this.load.image('userFish', 'assets/user-fish.png')
@@ -119,6 +120,10 @@ export default class Game extends Phaser.Scene {
             let x = Phaser.Math.RND.between(50, 200);
             let y = Phaser.Math.RND.between(50, 200);
             enemy.setVelocity(x, y)
+            // will later rotate the fish to face the right direction
+            // console.log(y)
+            // const rotation = (y / 127.35) - 0.3
+            // enemy.rotation = rotation
             enemy.body.setCircle(350, 100, 0)
             enemy.play('badSwim')
         }
@@ -163,7 +168,9 @@ export default class Game extends Phaser.Scene {
             }, 
             null, 
             this
+
             )
+        )
             
             this.physics.add.collider(
                 this.userFish, 
@@ -383,8 +390,30 @@ export default class Game extends Phaser.Scene {
         } else {
             this.userFish.rotation = 0
         }
+
     } else if (this.gameOver && Phaser.Input.Keyboard.JustDown(this.spacebar)) {
         this.scene.restart();
+    }
+
+    //ENEMY 
+    for (const enemy of this.enemies.getChildren()) {
+        //console.log(enemy.body)
+        //enemy.destroy()
+        
+        if (enemy.body.velocity.x > 0){
+            enemy.flipX = false
+        } else {
+            enemy.flipX = true
+        }
+
+        // in development
+        // if (enemy.body.velocity.y > 0){
+        //     const rotation = enemy.rotation
+        //     enemy.rotation = -rotation
+        // } else {
+        //     const rotation = enemy.rotation
+        //     enemy.rotation = -rotation
+        // }
     }
 
     }
