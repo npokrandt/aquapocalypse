@@ -290,40 +290,70 @@ export default class Game extends Phaser.Scene {
             this.userFish.y -= speed;
             this.userFish.x -= speed;
             this.userFish.flipX = true;
+            if (this.userFish.flipX){
+                this.userFish.rotation = 0.85
+            } else {
+                this.userFish.rotation = -0.85
+            }
             updateColliderPosition();
         } else if (this.cursors.up.isDown && this.cursors.right.isDown){
             this.userFish.y -= speed;
             this.userFish.x += speed;
             this.userFish.flipX = false;
+            if (this.userFish.flipX){
+                this.userFish.rotation = 0.85
+            } else {
+                this.userFish.rotation = -0.85
+            }
             updateColliderPosition();
         } else if (this.cursors.down.isDown && this.cursors.left.isDown){
             this.userFish.y += speed;
             this.userFish.x -= speed;
             this.userFish.flipX = true;
+            if (this.userFish.flipX){
+                this.userFish.rotation = -0.5
+            } else {
+                this.userFish.rotation = 0.5
+            }
             updateColliderPosition();
         } else if (this.cursors.down.isDown && this.cursors.right.isDown){
             this.userFish.y += speed;
             this.userFish.x += speed;
             this.userFish.flipX = false;
+            if (this.userFish.flipX){
+                this.userFish.rotation = -0.5
+            } else {
+                this.userFish.rotation = 0.5
+            }
             updateColliderPosition();
         } else if (this.cursors.up.isDown) {
             this.userFish.y -= speed;
-            //this.userFish.rotation = 5
+            if (this.userFish.flipX){
+                this.userFish.rotation = 0.85
+            } else {
+                this.userFish.rotation = -0.85
+            }
             updateColliderPosition();
         } else if (this.cursors.down.isDown) {
             this.userFish.y += speed;
-            //this.userFish.rotation = -5
+            if (this.userFish.flipX){
+                this.userFish.rotation = -0.5
+            } else {
+                this.userFish.rotation = 0.5
+            }
             updateColliderPosition();
         } else if (this.cursors.right.isDown){
             this.userFish.x += speed;
             this.userFish.flipX = false;
+            this.userFish.rotation = 0
             updateColliderPosition();
         } else if (this.cursors.left.isDown){
             this.userFish.x -= speed;
             this.userFish.flipX = true;
+            this.userFish.rotation = 0
             updateColliderPosition();
         } else {
-            //this.userFish.rotation = 0
+            this.userFish.rotation = 0
         }
     } else if (this.gameOver && Phaser.Input.Keyboard.JustDown(this.spacebar)) {
         this.scene.restart();
