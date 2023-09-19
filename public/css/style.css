@@ -14,6 +14,10 @@ footer {
     flex: 0 0 auto;
 }
 
+form {
+    padding: 30px;
+}
+
 body {
     display: flex;
     flex-direction: column;
@@ -83,6 +87,10 @@ h1, h2, h3, h4 {
     display: flex;
     justify-content: space-between;
     background-color: #95A3B3;
+}
+
+.login-label {
+    padding-left: 30px;
 }
 
 .main-home-div {
