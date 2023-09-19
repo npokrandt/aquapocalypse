@@ -10,14 +10,26 @@ export default class Game extends Phaser.Scene {
         this.load.image('bg-pillar-1', 'assets/bg-pillar-1.png')
         this.load.image('bg-pillar-2', 'assets/bg-pillar-2.png')
         this.load.image('fg-shadow', 'assets/fg-shadow.png')
+        this.load.image('fishFood', 'assets/fish-food.png')
         this.load.atlas('userFish', 'assets/user-fishies/user-spritesheet.png', 'assets/user-fishies/user-spritesheet.json')
         this.load.atlas('badFish', 'assets/bad-fishies/bad-spritesheet.png', 'assets/bad-fishies/bad-spritesheet.json')
-        this.load.image('fishFood', 'assets/fish-food.png')
+        this.load.audio('eatFood1', 'assets/sounds/mabel-chew-1.mp3')
+        this.load.audio('eatFood2', 'assets/sounds/mabel-chew-2.mp3')
+        this.load.audio('eatFood3', 'assets/sounds/mabel-chew-3.mp3')
+        this.load.audio('eatFood4', 'assets/sounds/mabel-chew-4.mp3')
+        this.load.audio('eatFood5', 'assets/sounds/mabel-chew-5.mp3')
+        this.load.audio('eatFood6', 'assets/sounds/mabel-chew-6.mp3')
+        this.load.audio('eatFood7', 'assets/sounds/mabel-chew-7.mp3')
+        this.load.audio('eatUser1', 'assets/sounds/mabel-chomp-1.mp3')
+        this.load.audio('eatUser2', 'assets/sounds/mabel-chomp-2.mp3')
+        this.load.audio('eatUser3', 'assets/sounds/mabel-chomp-3.mp3')
+        this.load.audio('theme', 'assets/sounds/theme.mp3')
     }
 
     //create the game
     create() { 
         this.physics.world.setBounds(0, 0, 4000, 3000)
+        this.sound.play('theme')
         
         this.bg = this.add.tileSprite(0, 0, 5000, 5000, 'bg')
             .setOrigin(0)
@@ -52,6 +64,8 @@ export default class Game extends Phaser.Scene {
             .setDisplaySize(6000, 4200)
             .setScrollFactor(1)
 
+        this.eatFoodSounds = ['eatFood1', 'eatFood2', 'eatFood3', 'eatFood4', 'eatFood5', 'eatFood6', 'eatFood7']
+        this.eatUserSounds = ['eatUser1', 'eatUser2', 'eatUser3']
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)    
         this.gameOver = false
 
@@ -139,35 +153,43 @@ export default class Game extends Phaser.Scene {
             this.userFish, 
             this.foodPieces, 
             function eatFood(user, food) {
-                food.disableBody(true, true);
-                score += 10; 
-                this.scoreLabel.setText('Score: ' + score)
-        
+                food.disableBody(true, true)
+
+                const randomFoodSound = Phaser.Math.RND.pick(this.eatFoodSounds)
+                this.sound.play(randomFoodSound)
+                
                 let newFoodX = Phaser.Math.Between(50, 3900)
                 let newFoodY = Phaser.Math.Between(50, 2400)
                 food.enableBody(true, newFoodX, newFoodY, true, true)
                 food.body.setCircle(8, 0, 0)
+                
+                score += 10 
+                this.scoreLabel.setText('Score: ' + score)
             }, 
             null, 
             this
+
+            )
         )
-
-        this.physics.add.collider(
-            this.userFish, 
-            this.enemies,
-            gameOver,
-            null,
-            this
-        );
-
-        //END GAME FUNCTIONS
-        function gameOver(){
-            this.gameOver = true;
-    
-            const camera = this.cameras.main;
             
-            this.gameOverLabel = this.add.text(camera.width / 2, camera.height / 2, 'GAME OVER!', {
-                fontSize: 150,
+            this.physics.add.collider(
+                this.userFish, 
+                this.enemies,
+                gameOver,
+                null,
+                this
+                );
+                
+                function gameOver(){
+                    this.gameOver = true;
+
+                    const randomUserSound = Phaser.Math.RND.pick(this.eatUserSounds)
+                    this.sound.play(randomUserSound)
+                    
+                    const camera = this.cameras.main;
+                    
+                    this.gameOverLabel = this.add.text(camera.width / 2, camera.height / 2, 'GAME OVER!', {
+                        fontSize: 150,
                 color: '#c2c675'
             })
             .setOrigin(0.5, 0.5)
@@ -284,7 +306,7 @@ export default class Game extends Phaser.Scene {
         this.scoreLabel.x = this.cameras.main.width / 2
         this.bg.setTilePosition(this.cameras.main.scrollX)
         this.bgParticle1.setTilePosition(this.cameras.main.scrollX * 0.5, this.cameras.main.scrollY * 0.5)
-        this.bgPillar1.setTilePosition(this.cameras.main.scrollX * 0.7, this.cameras.main.scrollY * 0.25) 
+        this.bgPillar1.setTilePosition(this.cameras.main.scrollX * 0.6, this.cameras.main.scrollY * 0.25) 
         this.bgPillar2.setTilePosition(this.cameras.main.scrollX * 0.75, this.cameras.main.scrollY * 0.15) 
         this.fgShadow.setTilePosition(this.cameras.main.scrollX * 0.8, this.cameras.main.scrollY * 0.1) 
 
