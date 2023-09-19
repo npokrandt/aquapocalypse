@@ -71,13 +71,13 @@ export default class Game extends Phaser.Scene {
         this.foodPieces = this.physics.add.group({
             key: 'fishFood',
             frameQuantity: 200,
-            setScale: {x: 0.02, y: 0.02}
+            // setScale: {x: 0.02, y: 0.02}
         }); 
 
         Phaser.Actions.RandomRectangle(this.foodPieces.getChildren(), new Phaser.Geom.Rectangle(50, 50, 3900, 2400))
 
         for (const foodPiece of this.foodPieces.getChildren()) {
-            foodPiece.body.setCircle(420, 50, 50)
+            foodPiece.body.setCircle(8, 0, 0)
         }
 
         //BAD FISHIES

@@ -1,26 +1,32 @@
-<div class="display-flex justify-center">
-  <a href="/game">
-    <button class="btn">Start Game</button>
-  </a>
-
-  <a href="/high-scores">
-    <button class="btn">High Scores</button>
-  </a>
-</div>
-<div class="lobby-div">
-
+<div class="main-home-div">
   <h1>Welcome, <span>{{loggedInUser.name}}</span>!</h1>
 
-  <h2>Lobby</h2>
-
-  {{#each users as |user| }}
-  <div class="row align-center">
-    <div class="col-md-2">
-      <p class="home-page-text">{{user.name}}</p>
-    </div>
-    <div class="col-md-4">
-      <p class="home-page-text"><a href="mailto:{{user.email}}">{{user.email}}</a></p>
-    </div>
+  <div class="display-flex justify-center align-items">
+    <a href="/game">
+      <button class="btn">Start Game</button>
+    </a>
   </div>
-  {{/each}}
+
+  {{!-- <h2>Lobby</h2>
+  <div class="lobby-div">
+    <div class="row align-center lobby-label">
+      <div class="col-md-2">
+        <p class="home-page-text">Name</p>
+      </div>
+      <div class="col-md-2">
+        <p class="home-page-text">Score</p>
+      </div>
+    </div>
+    {{#each users as |user| }}
+    <div class="row align-center">
+      <div class="col-md-2">
+        <p class="home-page-text">{{user.name}}</p>
+      </div>
+      <div class="col-md-2">
+        <p class="home-page-text">{{user.score}}</p>
+      </div>
+    </div>
+    {{/each}}
+  </div> --}}
+
 </div>
