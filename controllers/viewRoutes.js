@@ -28,6 +28,7 @@ router.get('/', withAuth, async (req, res) => {
 router.get('/game', withAuth, (req, res) => {
   res.render('game', {
     logged_in: req.session.logged_in,
+    is_on_game_page: true
   })
 })
 
