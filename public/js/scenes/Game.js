@@ -9,9 +9,16 @@ export default class Game extends Phaser.Scene {
         this.load.image('bg-pillar-1', 'assets/bg-pillar-1.png')
         this.load.image('bg-pillar-2', 'assets/bg-pillar-2.png')
         this.load.image('fg-shadow', 'assets/fg-shadow.png')
+        this.load.image('fishFood', 'assets/fish-food.png')
         this.load.atlas('userFish', 'assets/user-fishies/user-spritesheet.png', 'assets/user-fishies/user-spritesheet.json')
         this.load.atlas('badFish', 'assets/bad-fishies/bad-spritesheet.png', 'assets/bad-fishies/bad-spritesheet.json')
-        this.load.image('fishFood', 'assets/fish-food.png')
+        this.load.audio('eatFood1', 'assets/sounds/mabel-chew-1.mp3')
+        this.load.audio('eatFood2', 'assets/sounds/mabel-chew-2.mp3')
+        this.load.audio('eatFood3', 'assets/sounds/mabel-chew-3.mp3')
+        this.load.audio('eatFood4', 'assets/sounds/mabel-chew-4.mp3')
+        this.load.audio('eatFood5', 'assets/sounds/mabel-chew-5.mp3')
+        this.load.audio('eatFood6', 'assets/sounds/mabel-chew-6.mp3')
+        this.load.audio('eatFood7', 'assets/sounds/mabel-chew-7.mp3')
     }
 
     //create the game
@@ -51,6 +58,7 @@ export default class Game extends Phaser.Scene {
             .setDisplaySize(6000, 4200)
             .setScrollFactor(1)
 
+        this.eatFoodSounds = ['eatFood1', 'eatFood2', 'eatFood3', 'eatFood4', 'eatFood5', 'eatFood6', 'eatFood7']
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)    
         this.gameOver = false
 
@@ -134,14 +142,19 @@ export default class Game extends Phaser.Scene {
             this.userFish, 
             this.foodPieces, 
             function eatFood(user, food) {
-                food.disableBody(true, true);
-                score += 10; 
-                this.scoreLabel.setText('Score: ' + score)
+                food.disableBody(true, true)
+
+                const randomSoundKey = Phaser.Math.RND.pick(this.eatFoodSounds)
         
+                this.sound.play(randomSoundKey)
+                
                 let newFoodX = Phaser.Math.Between(50, 3900)
                 let newFoodY = Phaser.Math.Between(50, 2400)
                 food.enableBody(true, newFoodX, newFoodY, true, true)
                 food.body.setCircle(8, 0, 0)
+
+                score += 10 
+                this.scoreLabel.setText('Score: ' + score)
             }, 
             null, 
             this
