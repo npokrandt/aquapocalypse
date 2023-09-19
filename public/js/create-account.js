@@ -2,9 +2,15 @@ const form = document.querySelector('form')
 const emailInput = document.querySelector('[name="email"]')
 const usernameInput = document.querySelector('[name="username"]')
 const passwordInput = document.querySelector('[name="password"]')
+const confirmPasswordInput = document.querySelector('[name="confirmPassword"]')
 
 const handleSubmit = e => {
     e.preventDefault()
+    console.log(passwordInput.value, confirmPasswordInput.value)
+    if (passwordInput.value !== confirmPasswordInput.value){
+        alert('passwords must match')
+        return
+    }
     const newUser = {
         email: emailInput.value,
         username: usernameInput.value,
