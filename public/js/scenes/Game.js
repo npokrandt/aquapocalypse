@@ -286,7 +286,7 @@ export default class Game extends Phaser.Scene {
     if (!this.gameOver){
         const speed = 3;
 
-        if (this.cursors.up.isDown && this.cursors.left.isDown){
+        if (this.cursors.up.isDown && this.cursors.left.isDown){ 
             this.userFish.y -= speed;
             this.userFish.x -= speed;
             this.userFish.flipX = true;
@@ -308,9 +308,11 @@ export default class Game extends Phaser.Scene {
             updateColliderPosition();
         } else if (this.cursors.up.isDown) {
             this.userFish.y -= speed;
+            //this.userFish.rotation = 5
             updateColliderPosition();
         } else if (this.cursors.down.isDown) {
             this.userFish.y += speed;
+            //this.userFish.rotation = -5
             updateColliderPosition();
         } else if (this.cursors.right.isDown){
             this.userFish.x += speed;
@@ -320,6 +322,8 @@ export default class Game extends Phaser.Scene {
             this.userFish.x -= speed;
             this.userFish.flipX = true;
             updateColliderPosition();
+        } else {
+            //this.userFish.rotation = 0
         }
     } else if (this.gameOver && Phaser.Input.Keyboard.JustDown(this.spacebar)) {
         this.scene.restart();

@@ -11,8 +11,15 @@ router.get('/', withAuth, async (req, res) => {
 
     const users = userData.map((project) => project.get({ plain: true }));
 
+    const loggedInUser = await User.findByPk(req.session.user_id, {
+      raw: true
+    })
+
+    console.log(req.session.user_id)
+
     res.render('homepage', {
       users,
+      loggedInUser,
       logged_in: req.session.logged_in,
     });
   } catch (err) {
