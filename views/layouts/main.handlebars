@@ -20,9 +20,15 @@
     </a>
       
     <nav>
-      <a href="/high-scores">
-        <button class="btn">High Scores</button>
-      </a>
+      {{#if logged_in}} 
+        {{#if is_on_high_score_page}} 
+          {{!-- no button --}}
+        {{else}}     
+        <a href="/high-scores">
+          <button class="btn">High Scores</button>
+        </a>
+        {{/if}}
+      {{/if}}
       <button class="btn" id="logout">{{> log-in-out }}</button>
     </nav>
   </header>

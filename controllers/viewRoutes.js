@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { User, Score } = require('../models');
 const withAuth = require('../utils/auth');
 
-router.get('/', withAuth, async (req, res) => {
+router.get('/', withAuth, async (req, res) => { 
   try {
     const userData = await User.findAll({
       attributes: { exclude: ['password'] },
@@ -25,18 +25,19 @@ router.get('/', withAuth, async (req, res) => {
   }
 });
 
-router.get('/game', (req, res) => {
+router.get('/game', withAuth, (req, res) => {
   res.render('game', {
     logged_in: req.session.logged_in,
   })
 })
 
-router.get('/high-scores', async (req, res) => {
+//add data that will tell which page we on
+router.get('/high-scores', withAuth, async (req, res) => {
   const scoreData = await Score.findAll({
     include: User,
     order: [['score', 'DESC']]
   })
-  //console.log(scoreData)
+
   const scores = scoreData.map(score => score.get({ plain: true }))
 
   for (score in scores){
@@ -57,10 +58,16 @@ router.get('/high-scores', async (req, res) => {
   res.render('high-scores', { 
     scores,
     logged_in: req.session.logged_in,
+    is_on_high_score_page: true,
    })
 })
 
 router.get('/create-account', (req, res) => {
+  if (req.session.logged_in) {
+    res.redirect('/');
+    return;
+  }
+
   res.render('create-account')
 })
 
@@ -70,7 +77,9 @@ router.get('/login', (req, res) => {
     return;
   }
 
-  res.render('login');
+  res.render('login', {
+    is_on_login_page: true
+  });
 });
 
 module.exports = router;

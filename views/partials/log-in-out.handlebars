@@ -1,5 +1,9 @@
 {{#if logged_in}}
     <a id="logout" href="#">Log Out</a>
 {{else}}
-    <a href="/login">Log In</a>
+    {{#if is_on_login_page}}
+        <a href="/create-account">Create Account</a>
+    {{else}}
+        <a href="/login">Log In</a>
+    {{/if}}
 {{/if}}
