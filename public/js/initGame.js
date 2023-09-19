@@ -1,29 +1,47 @@
-import TitleScreen from './scenes/TitleScreen.js'
+import Home from './scenes/Home.js'
 import Game from './scenes/Game.js'
 
-const config = {
-    width: window.innerWidth,
-    height: window.innerHeight,
-    type: Phaser.AUTO,
-    backgroundColor: '#000000',
-    parent: 'game-canvas',
-    physics: {
-        default: 'arcade',
-        arcade: {
-            gravity: { y: 0 },
-            debug: true
-        }
+document.addEventListener("DOMContentLoaded", function() {
+    let canvasId;
+    const gameCanvas = document.getElementById('game-canvas');
+    const homeCanvas = document.getElementById('home-canvas');
+    
+    if (gameCanvas) {
+        canvasId = 'game-canvas';
+    } else if (homeCanvas) {
+        canvasId = 'home-canvas';
+    } else {
+        console.error("Canvas element not found.");
+        return;
     }
-}
 
-const game = new Phaser.Game(config)
+    const config = {
+        width: window.innerWidth,
+        height: window.innerHeight,
+        type: Phaser.AUTO,
+        backgroundColor: '#000000',
+        parent: canvasId,
+        physics: {
+            default: 'arcade',
+            arcade: {
+                gravity: { y: 0 },
+                debug: true
+            }
+        }
+    };
 
-game.scene.add('titlescreen', TitleScreen)
-game.scene.add('game', Game)
+    const game = new Phaser.Game(config);
 
-// game.scene.start('titlescreen')
-game.scene.start('game')
+    game.scene.add('home', Home);
+    game.scene.add('game', Game);
 
-window.addEventListener('resize', () => {
-    game.scale.resize(window.innerWidth, window.innerHeight);
-})
+    if (canvasId === 'game-canvas') {
+        game.scene.start('game');
+    } else {
+        game.scene.start('home');
+    }
+
+    window.addEventListener('resize', () => {
+        game.scale.resize(window.innerWidth, window.innerHeight);
+    });
+});

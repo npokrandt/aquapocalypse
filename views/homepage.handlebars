@@ -1,3 +1,4 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/phaser/3.60.0/phaser.min.js" integrity="sha512-YQL0GVx/Too3vZjBl9plePRIYsRnd1s8N6QOvXPdZ+JMH2mtRTLQXGUDGjNW6zr1HUgcOIury67IvWe91oeEwQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <div class="main-home-div">
   <h1>Welcome, <span>{{loggedInUser.name}}</span>!</h1>
 
@@ -7,26 +8,8 @@
     </a>
   </div>
 
-  {{!-- <h2>Lobby</h2>
-  <div class="lobby-div">
-    <div class="row align-center lobby-label">
-      <div class="col-md-2">
-        <p class="home-page-text">Name</p>
-      </div>
-      <div class="col-md-2">
-        <p class="home-page-text">Score</p>
-      </div>
-    </div>
-    {{#each users as |user| }}
-    <div class="row align-center">
-      <div class="col-md-2">
-        <p class="home-page-text">{{user.name}}</p>
-      </div>
-      <div class="col-md-2">
-        <p class="home-page-text">{{user.score}}</p>
-      </div>
-    </div>
-    {{/each}}
-  </div> --}}
+
+    <div id="home-canvas"></div>
 
 </div>
+<script src="/js/initGame.js" type="module"></script>
