@@ -134,13 +134,19 @@ export default class Game extends Phaser.Scene {
             this.userFish, 
             this.foodPieces, 
             function eatFood(user, food) {
-                food.disableBody(true, true);
+                food.disableBody(true, true); 
                 score += 10; 
                 this.scoreLabel.setText('Score: ' + score);
-                //console.log(score)
+        
+                // Re-enable the body at a new random position
+                let newFoodX = Phaser.Math.Between(50, 3900);
+                let newFoodY = Phaser.Math.Between(50, 2400);
+                food.enableBody(true, newFoodX, newFoodY, true, true);
+                food.body.setCircle(8, 0, 0);
             }, 
             null, 
-            this);
+            this
+        );
 
         this.physics.add.collider(
             this.userFish, 
@@ -286,7 +292,7 @@ export default class Game extends Phaser.Scene {
         }
 
     if (!this.gameOver){
-        const speed = 10;
+        const speed = 7;
 
         if (this.cursors.up.isDown && this.cursors.left.isDown){ 
             this.userFish.y -= speed;
