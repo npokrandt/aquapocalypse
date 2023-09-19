@@ -1,8 +1,3 @@
-const { Wrap } = Phaser.Math
-//const { black, white } = colors.hexColors;
-const cellW = 100
-const cellH = 100
-
 export default class Game extends Phaser.Scene {
 
     preload()
@@ -56,15 +51,6 @@ export default class Game extends Phaser.Scene {
 
         this.spacebar = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE)    
         this.gameOver = false
-            
-        const gameOverLabel2 = this.add.text(400, 450, 'Score saved!', {
-            fontSize: 32,
-            color: 'white'
-        })
-
-        gameOverLabel2.setScrollFactor(0, 0)
-        gameOverLabel2.setOrigin(0.5, 0.5)
-        gameOverLabel2.visible = false
 
         let isDatabaseFull = false
 
@@ -298,7 +284,7 @@ export default class Game extends Phaser.Scene {
         }
 
     if (!this.gameOver){
-        const speed = 10;
+        const speed = 3;
 
         if (this.cursors.up.isDown && this.cursors.left.isDown){
             this.userFish.y -= speed;
