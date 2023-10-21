@@ -135,7 +135,7 @@ export default class Game extends Phaser.Scene {
             .setScrollFactor(.9)
 
         //SCORE
-        let score = 0;
+        this.score = 0;
         this.scoreLabel = this.add.text(0, 80, 'Score: 0', {
             fontSize: 48,
             color: '#c2c675'
@@ -163,8 +163,8 @@ export default class Game extends Phaser.Scene {
                 food.enableBody(true, newFoodX, newFoodY, true, true)
                 food.body.setCircle(8, 0, 0)
                 
-                score += 10 
-                this.scoreLabel.setText('Score: ' + score)
+                this.score += 10 
+                this.scoreLabel.setText('Score: ' + this.score)
             }, 
             null, 
             this
@@ -250,7 +250,7 @@ export default class Game extends Phaser.Scene {
             .then(result => {
                 const lowestScore = result.score
                 console.log(result)
-                if (score > lowestScore){
+                if (this.score > lowestScore){
                     updateScore(result.id)
                 }
                 
@@ -263,7 +263,7 @@ export default class Game extends Phaser.Scene {
 
         function updateScore(id){
             const scoreObject = {
-                score
+                score: this.score
             }
 
             if (isDatabaseFull){
@@ -391,6 +391,7 @@ export default class Game extends Phaser.Scene {
             this.userFish.rotation = 0
         }
 
+        console.log(this.score)
     } else if (this.gameOver && Phaser.Input.Keyboard.JustDown(this.spacebar)) {
         this.scene.restart();
     }
