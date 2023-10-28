@@ -74,6 +74,8 @@ export default class Game extends Phaser.Scene {
         this.newEnemy = false
         this.speedEnemyUp = false
 
+        this.speed = 7
+
         //USER FISH
         this.anims.create({
             key: 'swim',
@@ -305,6 +307,7 @@ export default class Game extends Phaser.Scene {
     }
 
     update() {
+        // let this.speed = 7;
         /** @type {Phaser.Physics.Arcade.StaticBody} */
         this.scoreLabel.x = this.cameras.main.width / 2
         this.bg.setTilePosition(this.cameras.main.scrollX)
@@ -322,11 +325,10 @@ export default class Game extends Phaser.Scene {
         }
 
     if (!this.gameOver){
-        const speed = 7;
 
         if (this.cursors.up.isDown && this.cursors.left.isDown){ 
-            this.userFish.y -= speed;
-            this.userFish.x -= speed;
+            this.userFish.y -= this.speed;
+            this.userFish.x -= this.speed;
             this.userFish.flipX = true;
             if (this.userFish.flipX){
                 this.userFish.rotation = 0.85
@@ -335,8 +337,8 @@ export default class Game extends Phaser.Scene {
             }
             updateColliderPosition();
         } else if (this.cursors.up.isDown && this.cursors.right.isDown){
-            this.userFish.y -= speed;
-            this.userFish.x += speed;
+            this.userFish.y -= this.speed;
+            this.userFish.x += this.speed;
             this.userFish.flipX = false;
             if (this.userFish.flipX){
                 this.userFish.rotation = 0.85
@@ -345,8 +347,8 @@ export default class Game extends Phaser.Scene {
             }
             updateColliderPosition();
         } else if (this.cursors.down.isDown && this.cursors.left.isDown){
-            this.userFish.y += speed;
-            this.userFish.x -= speed;
+            this.userFish.y += this.speed;
+            this.userFish.x -= this.speed;
             this.userFish.flipX = true;
             if (this.userFish.flipX){
                 this.userFish.rotation = -0.5
@@ -355,8 +357,8 @@ export default class Game extends Phaser.Scene {
             }
             updateColliderPosition();
         } else if (this.cursors.down.isDown && this.cursors.right.isDown){
-            this.userFish.y += speed;
-            this.userFish.x += speed;
+            this.userFish.y += this.speed;
+            this.userFish.x += this.speed;
             this.userFish.flipX = false;
             if (this.userFish.flipX){
                 this.userFish.rotation = -0.5
@@ -365,7 +367,7 @@ export default class Game extends Phaser.Scene {
             }
             updateColliderPosition();
         } else if (this.cursors.up.isDown) {
-            this.userFish.y -= speed;
+            this.userFish.y -= this.speed;
             if (this.userFish.flipX){
                 this.userFish.rotation = 0.85
             } else {
@@ -373,7 +375,7 @@ export default class Game extends Phaser.Scene {
             }
             updateColliderPosition();
         } else if (this.cursors.down.isDown) {
-            this.userFish.y += speed;
+            this.userFish.y += this.speed;
             if (this.userFish.flipX){
                 this.userFish.rotation = -0.5
             } else {
@@ -381,12 +383,12 @@ export default class Game extends Phaser.Scene {
             }
             updateColliderPosition();
         } else if (this.cursors.right.isDown){
-            this.userFish.x += speed;
+            this.userFish.x += this.speed;
             this.userFish.flipX = false;
             this.userFish.rotation = 0
             updateColliderPosition();
         } else if (this.cursors.left.isDown){
-            this.userFish.x -= speed;
+            this.userFish.x -= this.speed;
             this.userFish.flipX = true;
             this.userFish.rotation = 0
             updateColliderPosition();
@@ -399,20 +401,33 @@ export default class Game extends Phaser.Scene {
     }
 
     if (this.score % 150 === 0 && this.score > 0 && !this.speedEnemyUp){
-        console.log('enemies speed up')
+        console.log('enemies this.speed up')
+        const velocityChange = 20
+        for (const enemy of this.enemies.getChildren()){
+            if (enemy.body.velocity.x > 0){
+                enemy.body.velocity.x += velocityChange
+            } else {
+                enemy.body.velocity.x -= velocityChange
+            }
+
+            if (enemy.body.velocity.y > 0){
+                enemy.body.velocity.y += velocityChange
+            } else {
+                enemy.body.velocity.y -= velocityChange
+            }
+        }
         //allows the function to only happen once
         this.speedEnemyUp = true
     } else if ((this.score - 10) % 150 === 0) {
         this.speedEnemyUp = false
     }
 
-    if (this.score % 200 === 0 && this.score > 0 && !this.newEnemy){
-        console.log('new enemy created')
-        //allows the function to only happen once
-        this.newEnemy = true
-    } else if ((this.score - 10) % 200 === 0) {
-        this.newEnemy = false
-    }
+    // if (this.score % 200 === 0 && this.score > 0 && !this.newEnemy){
+    //     //allows the function to only happen once
+    //     this.newEnemy = true
+    // } else if ((this.score - 10) % 200 === 0) {
+    //     this.newEnemy = false
+    // }
 
 
     //ENEMY 
