@@ -71,6 +71,9 @@ export default class Game extends Phaser.Scene {
 
         let isDatabaseFull = false
 
+        this.newEnemy = false
+        this.speedEnemyUp = false
+
         //USER FISH
         this.anims.create({
             key: 'swim',
@@ -391,10 +394,26 @@ export default class Game extends Phaser.Scene {
             this.userFish.rotation = 0
         }
 
-        console.log(this.score)
     } else if (this.gameOver && Phaser.Input.Keyboard.JustDown(this.spacebar)) {
         this.scene.restart();
     }
+
+    if (this.score % 150 === 0 && this.score > 0 && !this.speedEnemyUp){
+        console.log('enemies speed up')
+        //allows the function to only happen once
+        this.speedEnemyUp = true
+    } else if ((this.score - 10) % 150 === 0) {
+        this.speedEnemyUp = false
+    }
+
+    if (this.score % 200 === 0 && this.score > 0 && !this.newEnemy){
+        console.log('new enemy created')
+        //allows the function to only happen once
+        this.newEnemy = true
+    } else if ((this.score - 10) % 200 === 0) {
+        this.newEnemy = false
+    }
+
 
     //ENEMY 
     for (const enemy of this.enemies.getChildren()) {
