@@ -1,6 +1,5 @@
 export default class Game extends Phaser.Scene {
 
-    //can I get enemies to flip and rotate the same way player does?
     preload()
     {
         //this.load.image('userFish', 'assets/user-fish.png')
@@ -71,6 +70,11 @@ export default class Game extends Phaser.Scene {
 
         let isDatabaseFull = false
 
+        this.newEnemy = false
+        this.speedEnemyUp = false
+
+        this.speed = 7
+
         //USER FISH
         this.anims.create({
             key: 'swim',
@@ -135,7 +139,7 @@ export default class Game extends Phaser.Scene {
             .setScrollFactor(.9)
 
         //SCORE
-        let score = 0;
+        this.score = 0;
         this.scoreLabel = this.add.text(0, 80, 'Score: 0', {
             fontSize: 48,
             color: '#c2c675'
@@ -163,8 +167,8 @@ export default class Game extends Phaser.Scene {
                 food.enableBody(true, newFoodX, newFoodY, true, true)
                 food.body.setCircle(8, 0, 0)
                 
-                score += 10 
-                this.scoreLabel.setText('Score: ' + score)
+                this.score += 10 
+                this.scoreLabel.setText('Score: ' + this.score)
             }, 
             null, 
             this
@@ -208,10 +212,10 @@ export default class Game extends Phaser.Scene {
 
             this.userFish.destroy()
         
-            checkDatabase()
+            checkDatabase(this.score)
         }
 
-        function checkDatabase(){
+        function checkDatabase(score){
 
             fetch('/api/scores/score-count').
             then(response => {
@@ -228,9 +232,9 @@ export default class Game extends Phaser.Scene {
                 //the database is full
                 if (scoreCount >= 100){
                     isDatabaseFull = true
-                    checkScore()
+                    checkScore(score)
                 } else {
-                    updateScore()
+                    updateScore(score, result.id)
                 }
             })
             .catch (err => console.log(err))
@@ -251,7 +255,7 @@ export default class Game extends Phaser.Scene {
                 const lowestScore = result.score
                 console.log(result)
                 if (score > lowestScore){
-                    updateScore(result.id)
+                    updateScore(score, result.id)
                 }
                 
             })
@@ -261,7 +265,7 @@ export default class Game extends Phaser.Scene {
             //else, discard the new score, and don't print the 'saving score' message
         }
 
-        function updateScore(id){
+        function updateScore(score, id){
             const scoreObject = {
                 score
             }
@@ -302,6 +306,7 @@ export default class Game extends Phaser.Scene {
     }
 
     update() {
+        // let this.speed = 7;
         /** @type {Phaser.Physics.Arcade.StaticBody} */
         this.scoreLabel.x = this.cameras.main.width / 2
         this.bg.setTilePosition(this.cameras.main.scrollX)
@@ -319,11 +324,10 @@ export default class Game extends Phaser.Scene {
         }
 
     if (!this.gameOver){
-        const speed = 7;
 
         if (this.cursors.up.isDown && this.cursors.left.isDown){ 
-            this.userFish.y -= speed;
-            this.userFish.x -= speed;
+            this.userFish.y -= this.speed;
+            this.userFish.x -= this.speed;
             this.userFish.flipX = true;
             if (this.userFish.flipX){
                 this.userFish.rotation = 0.85
@@ -332,8 +336,8 @@ export default class Game extends Phaser.Scene {
             }
             updateColliderPosition();
         } else if (this.cursors.up.isDown && this.cursors.right.isDown){
-            this.userFish.y -= speed;
-            this.userFish.x += speed;
+            this.userFish.y -= this.speed;
+            this.userFish.x += this.speed;
             this.userFish.flipX = false;
             if (this.userFish.flipX){
                 this.userFish.rotation = 0.85
@@ -342,8 +346,8 @@ export default class Game extends Phaser.Scene {
             }
             updateColliderPosition();
         } else if (this.cursors.down.isDown && this.cursors.left.isDown){
-            this.userFish.y += speed;
-            this.userFish.x -= speed;
+            this.userFish.y += this.speed;
+            this.userFish.x -= this.speed;
             this.userFish.flipX = true;
             if (this.userFish.flipX){
                 this.userFish.rotation = -0.5
@@ -352,8 +356,8 @@ export default class Game extends Phaser.Scene {
             }
             updateColliderPosition();
         } else if (this.cursors.down.isDown && this.cursors.right.isDown){
-            this.userFish.y += speed;
-            this.userFish.x += speed;
+            this.userFish.y += this.speed;
+            this.userFish.x += this.speed;
             this.userFish.flipX = false;
             if (this.userFish.flipX){
                 this.userFish.rotation = -0.5
@@ -362,7 +366,7 @@ export default class Game extends Phaser.Scene {
             }
             updateColliderPosition();
         } else if (this.cursors.up.isDown) {
-            this.userFish.y -= speed;
+            this.userFish.y -= this.speed;
             if (this.userFish.flipX){
                 this.userFish.rotation = 0.85
             } else {
@@ -370,7 +374,7 @@ export default class Game extends Phaser.Scene {
             }
             updateColliderPosition();
         } else if (this.cursors.down.isDown) {
-            this.userFish.y += speed;
+            this.userFish.y += this.speed;
             if (this.userFish.flipX){
                 this.userFish.rotation = -0.5
             } else {
@@ -378,12 +382,12 @@ export default class Game extends Phaser.Scene {
             }
             updateColliderPosition();
         } else if (this.cursors.right.isDown){
-            this.userFish.x += speed;
+            this.userFish.x += this.speed;
             this.userFish.flipX = false;
             this.userFish.rotation = 0
             updateColliderPosition();
         } else if (this.cursors.left.isDown){
-            this.userFish.x -= speed;
+            this.userFish.x -= this.speed;
             this.userFish.flipX = true;
             this.userFish.rotation = 0
             updateColliderPosition();
@@ -393,6 +397,28 @@ export default class Game extends Phaser.Scene {
 
     } else if (this.gameOver && Phaser.Input.Keyboard.JustDown(this.spacebar)) {
         this.scene.restart();
+    }
+
+    if (this.score % 150 === 0 && this.score > 0 && !this.speedEnemyUp){
+        console.log('enemies this.speed up')
+        const velocityChange = 10
+        for (const enemy of this.enemies.getChildren()){
+            if (enemy.body.velocity.x > 0){
+                enemy.body.velocity.x += velocityChange
+            } else {
+                enemy.body.velocity.x -= velocityChange
+            }
+
+            if (enemy.body.velocity.y > 0){
+                enemy.body.velocity.y += velocityChange
+            } else {
+                enemy.body.velocity.y -= velocityChange
+            }
+        }
+        //allows the function to only happen once
+        this.speedEnemyUp = true
+    } else if ((this.score - 10) % 150 === 0) {
+        this.speedEnemyUp = false
     }
 
     //ENEMY 
