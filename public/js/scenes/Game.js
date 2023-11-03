@@ -1,6 +1,5 @@
 export default class Game extends Phaser.Scene {
 
-    //can I get enemies to flip and rotate the same way player does?
     preload()
     {
         //this.load.image('userFish', 'assets/user-fish.png')
@@ -213,10 +212,10 @@ export default class Game extends Phaser.Scene {
 
             this.userFish.destroy()
         
-            checkDatabase()
+            checkDatabase(this.score)
         }
 
-        function checkDatabase(){
+        function checkDatabase(score){
 
             fetch('/api/scores/score-count').
             then(response => {
@@ -233,9 +232,9 @@ export default class Game extends Phaser.Scene {
                 //the database is full
                 if (scoreCount >= 100){
                     isDatabaseFull = true
-                    checkScore()
+                    checkScore(score)
                 } else {
-                    updateScore()
+                    updateScore(score, result.id)
                 }
             })
             .catch (err => console.log(err))
@@ -255,8 +254,8 @@ export default class Game extends Phaser.Scene {
             .then(result => {
                 const lowestScore = result.score
                 console.log(result)
-                if (this.score > lowestScore){
-                    updateScore(result.id)
+                if (score > lowestScore){
+                    updateScore(score, result.id)
                 }
                 
             })
@@ -266,9 +265,9 @@ export default class Game extends Phaser.Scene {
             //else, discard the new score, and don't print the 'saving score' message
         }
 
-        function updateScore(id){
+        function updateScore(score, id){
             const scoreObject = {
-                score: this.score
+                score
             }
 
             if (isDatabaseFull){
@@ -402,7 +401,7 @@ export default class Game extends Phaser.Scene {
 
     if (this.score % 150 === 0 && this.score > 0 && !this.speedEnemyUp){
         console.log('enemies this.speed up')
-        const velocityChange = 20
+        const velocityChange = 10
         for (const enemy of this.enemies.getChildren()){
             if (enemy.body.velocity.x > 0){
                 enemy.body.velocity.x += velocityChange
@@ -421,14 +420,6 @@ export default class Game extends Phaser.Scene {
     } else if ((this.score - 10) % 150 === 0) {
         this.speedEnemyUp = false
     }
-
-    // if (this.score % 200 === 0 && this.score > 0 && !this.newEnemy){
-    //     //allows the function to only happen once
-    //     this.newEnemy = true
-    // } else if ((this.score - 10) % 200 === 0) {
-    //     this.newEnemy = false
-    // }
-
 
     //ENEMY 
     for (const enemy of this.enemies.getChildren()) {
